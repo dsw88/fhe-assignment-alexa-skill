@@ -1,0 +1,9 @@
+AssignmentsIntent the assignments
+AssignmentsIntent {week} week's assignments
+FamilyMemberAssignmentIntent {family_member}'s assignment
+FamilyMemberAssignmentIntent what is {family_member}'s assignment
+FamilyMemberAssignmentIntent {family_member}'s assignment {week} week
+FamilyMemberAssignmentIntent what is {family_member}'s assignment {week} week
+SetupIntent setup
+SetupIntent do setup
+SetupIntent perform setup

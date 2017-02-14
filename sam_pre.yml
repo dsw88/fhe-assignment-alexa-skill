@@ -22,7 +22,7 @@ Resources:
                 - 'dynamodb:Scan'
                 - 'dynamodb:UpdateItem'
               Resource:
-                - !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:/*"
+                - !Join ["", [!Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:/", !Ref FHEAlexaSkillTable]]
       Events:
         AlexaEvent:
           Type: AlexaSkill
@@ -41,3 +41,12 @@ Resources:
      ProvisionedThroughput:
        ReadCapacityUnits: 1
        WriteCapacityUnits: 1
+Outputs:
+  LambdaArn:
+    Value: !GetAtt FHEAlexaLambda.Arn
+    Export: 
+      Name: !Sub "${AWS::StackName}-FHEAlexaLambdaArn"
+  DynamoTableArn:
+    Value: !Join ["", [!Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:/", !Ref FHEAlexaSkillTable]]
+    Export: 
+      Name: !Sub "${AWS::StackName}-DynamoTableArn"

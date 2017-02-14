@@ -2,26 +2,26 @@
   "intents": [
     {
         "intent": "SetupIntent",
-        "slot": []
+        "slots": []
     },
     {
         "intent": "AssignmentsIntent",
-        "slot": [
+        "slots": [
             {
-               "name": "week",
+               "name": "AWeek",
                "type": "WEEKS" 
             }
         ]
     },
     {
         "intent": "FamilyMemberAssignmentIntent",
-        "slot": [
+        "slots": [
             {
-               "name": "family_member",
+               "name": "FamilyMember",
                "type": "AMAZON.US_FIRST_NAME" 
             },
             {
-               "name": "week",
+               "name": "FMAWeek",
                "type": "WEEKS" 
             }
         ]

@@ -54,7 +54,6 @@ def setup_intent_handler(request):
 @alexa.intent_handler('AssignmentsIntent')
 def assignments_intent_handler(request):
     try:
-        print(request.session)
         assignments = get_assignments(request.slots["AWeek"], request.user_id())
         response = ""
         for i, family_member in enumerate(assignments['family_members']):

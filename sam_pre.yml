@@ -22,7 +22,7 @@ Resources:
                 - 'dynamodb:Scan'
                 - 'dynamodb:UpdateItem'
               Resource:
-                - !Join ["", [!Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:/", !Ref FHEAlexaSkillTable]]
+                - !Join ["", [!Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/", !Ref FHEAlexaSkillTable]]
       Environment:
         Variables:
           TABLE_NAME: !Ref FHEAlexaSkillTable
@@ -50,6 +50,6 @@ Outputs:
     Export: 
       Name: !Sub "${AWS::StackName}-FHEAlexaLambdaArn"
   DynamoTableArn:
-    Value: !Join ["", [!Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:/", !Ref FHEAlexaSkillTable]]
+    Value: !Join ["", [!Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/", !Ref FHEAlexaSkillTable]]
     Export: 
       Name: !Sub "${AWS::StackName}-DynamoTableArn"

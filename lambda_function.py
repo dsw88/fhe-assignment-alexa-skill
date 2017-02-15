@@ -37,6 +37,9 @@ def lambda_handler(request_obj, context=None):
 def default_handler(request):
     return launch_request_handler(request)
 
+# TODO implement voice setup
+# TODO validate the rotation functionality works
+
 @alexa.request_handler("LaunchRequest")
 def launch_request_handler(request):
     if not is_setup(request.user_id()):

@@ -46,7 +46,7 @@ def launch_request_handler(request):
 
 @alexa.intent_handler('SetupIntent')
 def setup_intent_handler(request):
-    message = ""
+    message = " "
     if 'previous_message' in request.session:
         message = request.session['previous_message'] + message
     return alexa.create_response(message)
@@ -81,11 +81,11 @@ def family_member_assignment_intent_handler(request):
 def yes_intent_handler(request):
     if 'next_intent' in request.session:
         return globals()[request.session['next_intent']](request)
-    return alexa.create_response("", end_session=True)
+    return alexa.create_response(" ", end_session=True)
     
 @alexa.intent_handler('NoIntent')
 def no_intent_handler(request):
-    return alexa.create_response("", end_session=True)
+    return alexa.create_response(" ", end_session=True)
 
 # Helper functions
 def get_assignments(week, user_id):

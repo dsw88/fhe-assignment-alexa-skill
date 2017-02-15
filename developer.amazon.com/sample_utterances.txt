@@ -3,6 +3,7 @@ AssignmentsIntent {AWeek} week's assignments
 FamilyMemberAssignmentIntent {FamilyMember} assignment
 FamilyMemberAssignmentIntent what is {FamilyMember} assignment
 FamilyMemberAssignmentIntent {FamilyMember} assignment {FMAWeek} week
+FamilyMemberAssignmentIntent {FamilyMember} {FMAWeek} week assignment
 FamilyMemberAssignmentIntent what is {FamilyMember} assignment {FMAWeek} week
 SetupIntent setup
 SetupIntent do setup

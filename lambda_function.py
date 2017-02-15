@@ -29,63 +29,64 @@ def lambda_handler(request_obj, context=None):
     else:
         metadata = {}
         print(request_obj)
-        # use the metadata in a handler method like so `return alexa.respond('Hello there {}!'.format(request.metadata['user_name']))`
+        # use the metadata in a handler method like so `return alexa.create_response('Hello there {}!'.format(request.metadata['user_name']))`
         return alexa.route_request(request_obj, metadata) 
 
 # ASK functions
-@alexa.default
+@alexa.default_handler()
 def default_handler(request):
     return launch_request_handler(request)
 
-@alexa.request("LaunchRequest")
+@alexa.request_handler("LaunchRequest")
 def launch_request_handler(request):
-    if not is_setup(request.session.user.userId):
+    if not is_setup(request.user_id()):
         request.session['previous_message'] = "Since you haven't set up your assignments or family members yet, we'll do that now."
         return setup_intent_handler(request)
     return assignments_intent_handler(request)
 
-@alexa.intent('SetupIntent')
+@alexa.intent_handler('SetupIntent')
 def setup_intent_handler(request):
     message = ""
     if 'previous_message' in request.session:
         message = request.session['previous_message'] + message
-    return alexa.respond(message)
+    return alexa.create_response(message)
 
-@alexa.intent('AssignmentsIntent')
+@alexa.intent_handler('AssignmentsIntent')
 def assignments_intent_handler(request):
     try:
-        assignments = get_assignments(request.slots["week"])
+        print(request.session)
+        assignments = get_assignments(request.slots["AWeek"], request.user_id())
         response = ""
         for i, family_member in enumerate(assignments['family_members']):
             response += "{} is assigned to {}, ".format(family_member, assignments['assignments'][i])
-        return alexa.respond(response, end_session=True)
+        return alexa.create_response(response, end_session=True)
     except:
         print(traceback.format_exc())
-        return alexa.respond("There was a problem retrieving the assignments.", end_session=True)
+        return alexa.create_response("There was a problem retrieving the assignments.", end_session=True)
 
-@alexa.intent('FamilyMemberAssignmentIntent')
+@alexa.intent_handler('FamilyMemberAssignmentIntent')
 def family_member_assignment_intent_handler(request):
-    family_member = request.slots['family_member']
+    family_member = request.slots['FamilyMember']
     try:
-        assignments = get_assignments(request.slots["week"])
+        assignments = get_assignments(request.slots["FMAWeek"], request.user_id())
         if family_member in assignments.keys():
-            return alexa.respond("{}'s assignment is {}".format(family_member, assignment[family_member.lower()], end_session=True)
+            return alexa.create_response("{}'s assignment is {}".format(family_member, assignment[family_member.lower()], end_session=True))
         else:
             request.session['next_intent'] = 'SetupIntent'
-            return alexa.return("{} isn't one of the family members defined. Would you like to run setup again?")
+            return alexa.create_response("{} isn't one of the family members defined. Would you like to run setup again?")
     except:
         print(traceback.format_exc())
-        return alexa.respond("There was a problem retrieving {}'s assignments.".format(family_member), end_session=True)
+        return alexa.create_response("There was a problem retrieving {}'s assignments.".format(family_member), end_session=True)
 
-@alexa.intent('YesIntent')
+@alexa.intent_handler('YesIntent')
 def yes_intent_handler(request):
     if 'next_intent' in request.session:
         return globals()[request.session['next_intent']](request)
-    return alexa.respond("", end_session=True)
+    return alexa.create_response("", end_session=True)
     
-@alexa.intent('NoIntent')
+@alexa.intent_handler('NoIntent')
 def no_intent_handler(request):
-    return alexa.respond("", end_session=True)
+    return alexa.create_response("", end_session=True)
 
 # Helper functions
 def get_assignments(week, user_id):
@@ -135,7 +136,9 @@ def is_setup(user_id):
 
 def get_this_week_assignments(user_id):
     response = table.get_item(Key={'id': user_id})
-    return response['Item']
+    if 'Item' in response:
+        return response['Item']
+    return None
 
 if __name__ == "__main__":    
     import argparse
@@ -147,7 +150,7 @@ if __name__ == "__main__":
         print('Serving ASK functionality locally.')
         import flask
         server = flask.Flask(__name__)
-        @server.route('/')
+        @server.route('/', methods=['POST'])
         def alexa_skills_kit_requests():
             request_obj = flask.request.get_json()
             return lambda_handler(request_obj)

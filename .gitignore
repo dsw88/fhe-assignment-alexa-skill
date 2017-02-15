@@ -14,3 +14,5 @@
 !lambda_function.py
 !sam_pre.yml
 !deploy.sh
+!test/test.py
+!test/test.json

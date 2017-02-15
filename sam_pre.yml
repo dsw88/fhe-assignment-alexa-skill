@@ -23,6 +23,9 @@ Resources:
                 - 'dynamodb:UpdateItem'
               Resource:
                 - !Join ["", [!Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:/", !Ref FHEAlexaSkillTable]]
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref FHEAlexaSkillTable
       Events:
         AlexaEvent:
           Type: AlexaSkill

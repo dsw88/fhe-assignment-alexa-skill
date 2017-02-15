@@ -15,13 +15,20 @@ from __future__ import print_function
 from ask import alexa
 import boto3
 import traceback
+import os
+import copy
+
+# Initialization
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table(os.environ['TABLE_NAME'])
 
 # Lambda function
 def lambda_handler(request_obj, context=None):
     if request_obj == 'rotate':
-        rotate_assignments(request)
+        rotate_all_assignments(request)
     else:
         metadata = {}
+        print(request_obj)
         # use the metadata in a handler method like so `return alexa.respond('Hello there {}!'.format(request.metadata['user_name']))`
         return alexa.route_request(request_obj, metadata) 
 
@@ -32,7 +39,7 @@ def default_handler(request):
 
 @alexa.request("LaunchRequest")
 def launch_request_handler(request):
-    if not is_setup():
+    if not is_setup(request.session.user.userId):
         request.session['previous_message'] = "Since you haven't set up your assignments or family members yet, we'll do that now."
         return setup_intent_handler(request)
     return assignments_intent_handler(request)
@@ -49,8 +56,8 @@ def assignments_intent_handler(request):
     try:
         assignments = get_assignments(request.slots["week"])
         response = ""
-        for assignment in assignments:
-            # TODO format dictionary to spoken string
+        for i, family_member in enumerate(assignments['family_members']):
+            response += "{} is assigned to {}, ".format(family_member, assignments['assignments'][i])
         return alexa.respond(response, end_session=True)
     except:
         print(traceback.format_exc())
@@ -81,17 +88,52 @@ def no_intent_handler(request):
     return alexa.respond("", end_session=True)
 
 # Helper functions
-def get_assignments(week):
+def get_assignments(week, user_id):
     """
-    Returns the assignments in {'person': 'assignment', 'person2': 'assignment2'} format
+    Returns the assignments in {'id': aaaaaaaa, 'family_members': ['person': 'person2'], 'assignments': ['assignment1', 'assignment2']} format
     """
-    # TODO implement dynamo query
+    this_week_assignments = get_this_week_assignments(user_id)
+    if week == 'last':
+        return last_week_assignments(this_week_assignments)
+    elif week == 'next':
+        return next_week_assignments(this_week_assignments)
+    else:
+        return this_week_assignments
 
-def is_setup():
+def rotate_all_assignments(request):
+    """
+    Rotate all the assignments for each setup entry (TODO rethink design to be more scalable if needed)
+    """
+    #TODO implement rotate_assignments
+    # get all the set up records
+    # for each one 
+        # get next_week_assignments
+        # save out next_week_assignments
+
+def shift(num_to_shift, array):
+    return array[-num_to_shift:]+array[:-num_to_shift]
+
+def next_week_assignments(this_week_assignments):
+    return shift_assignments(this_week_assignments, 1)
+
+def last_week_assignments(this_week_assignments):
+    return shift_assignments(this_week_assignments, -1)
+
+def shift_assignments(this_week_assignments, num_to_shift):
+    na = copy.deepcopy(this_week_assignments)
+    na['assignments'] = shift(num_to_shift, this_week_assignments['assignments'])
+    return na
+
+def is_setup(user_id):
     """
     Returns a boolean indicating if the setup has been done.
     """
-    # TODO implement is_setup() with Dynamo
+    response = table.get_item(Key={'id': user_id})
+    return 'Item' in response
+
+def get_this_week_assignments(user_id):
+    response = table.get_item(Key={'id': user_id})
+    return response['Item']
 
 if __name__ == "__main__":    
     import argparse

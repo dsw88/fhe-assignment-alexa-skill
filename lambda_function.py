@@ -104,11 +104,13 @@ def rotate_all_assignments(request):
     """
     Rotate all the assignments for each setup entry (TODO rethink design to be more scalable if needed)
     """
-    #TODO implement rotate_assignments
-    # get all the set up records
-    # for each one 
-        # get next_week_assignments
-        # save out next_week_assignments
+    response = table.scan(ConsistentRead=True)
+    count = 0
+    for household_assignments in response['Items']:
+        nwa = next_week_assignments(household_assignments)
+        table.put_item(Item=nwa)
+        count += 1
+    print("Rotated {} users' assignments".format(count))
 
 def shift(num_to_shift, array):
     return array[-num_to_shift:]+array[:-num_to_shift]

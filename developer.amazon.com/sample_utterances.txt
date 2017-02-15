@@ -1,10 +1,15 @@
 AssignmentsIntent the assignments
+AssignmentsIntent to give me the assignments
+AssignmentsIntent to give us the assignments
 AssignmentsIntent {AWeek} week's assignments
+AssignmentsIntent to give me {AWeek} week's assignments
+AssignmentsIntent to give us {AWeek} week's assignments
 FamilyMemberAssignmentIntent {FamilyMember} assignment
 FamilyMemberAssignmentIntent what is {FamilyMember} assignment
 FamilyMemberAssignmentIntent {FamilyMember} assignment {FMAWeek} week
 FamilyMemberAssignmentIntent {FamilyMember} {FMAWeek} week assignment
 FamilyMemberAssignmentIntent what is {FamilyMember} assignment {FMAWeek} week
+FamilyMemberAssignmentIntent what is {FamilyMember} assignment for {FMAWeek} week
 SetupIntent setup
 SetupIntent do setup
 SetupIntent perform setup

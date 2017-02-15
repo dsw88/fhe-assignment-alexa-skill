@@ -58,9 +58,10 @@ def setup_intent_handler(request):
 def assignments_intent_handler(request):
     try:
         assignments = get_assignments(request.slots["AWeek"], request.user_id())
-        response = ""
+        response = "The assignments {} as follows: ".format(conjunction_junction(request.slots['AWeek'], individual=False))
         for i, family_member in enumerate(assignments['family_members']):
-            response += "{} is assigned to {}, ".format(family_member, assignments['assignments'][i])
+            family_member = normalize_family_member(family_member)
+            response += "{} {}, ".format(family_member, assignments['assignments'][i])
         return alexa.create_response(response, end_session=True)
     except:
         print(traceback.format_exc())
@@ -68,11 +69,17 @@ def assignments_intent_handler(request):
 
 @alexa.intent_handler('FamilyMemberAssignmentIntent')
 def family_member_assignment_intent_handler(request):
-    family_member = request.slots['FamilyMember']
+    family_member = normalize_family_member(request.slots['FamilyMember'])
+    def lower_list(l):
+        return [item.lower() for item in l]
     try:
-        assignments = get_assignments(request.slots["FMAWeek"], request.user_id())
-        if family_member in assignments.keys():
-            return alexa.create_response("{}'s assignment is {}".format(family_member, assignment[family_member.lower()], end_session=True))
+        wa = get_assignments(request.slots["FMAWeek"], request.user_id())
+        family_members = lower_list(wa['family_members'])
+        assignments = lower_list(wa['assignments'])
+        if family_member in family_members:
+            return alexa.create_response("{}'s assignment {} {}".format(family_member, 
+                conjunction_junction(request.slots['FMAWeek']), 
+                assignments[family_members.index(family_member)]), end_session=True)
         else:
             request.session['next_intent'] = 'SetupIntent'
             return alexa.create_response("{} isn't one of the family members defined. Would you like to run setup again?".format(family_member))
@@ -91,6 +98,22 @@ def no_intent_handler(request):
     return alexa.create_response(" ", end_session=True)
 
 # Helper functions
+def conjunction_junction(week, individual=True):
+    if individual:
+        if week == 'next':
+            return 'next week will be'
+        elif week == 'last':
+            return 'last week was'
+        else:
+            return 'this week is'
+    else:
+        if week == 'next':
+            return 'next week will be'
+        elif week == 'last':
+            return 'last week were'
+        else:
+            return 'this week are'
+
 def get_assignments(week, user_id):
     """
     Returns the assignments in {'id': aaaaaaaa, 'family_members': ['person': 'person2'], 'assignments': ['assignment1', 'assignment2']} format
@@ -141,6 +164,9 @@ def get_this_week_assignments(user_id):
     if 'Item' in response:
         return response['Item']
     return None
+
+def normalize_family_member(fm):
+    return fm.replace("'s", "").lower()
 
 if __name__ == "__main__":    
     import argparse

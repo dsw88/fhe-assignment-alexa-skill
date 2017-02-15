@@ -75,7 +75,7 @@ def family_member_assignment_intent_handler(request):
             return alexa.create_response("{}'s assignment is {}".format(family_member, assignment[family_member.lower()], end_session=True))
         else:
             request.session['next_intent'] = 'SetupIntent'
-            return alexa.create_response("{} isn't one of the family members defined. Would you like to run setup again?")
+            return alexa.create_response("{} isn't one of the family members defined. Would you like to run setup again?".format(family_member))
     except:
         print(traceback.format_exc())
         return alexa.create_response("There was a problem retrieving {}'s assignments.".format(family_member), end_session=True)

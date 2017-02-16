@@ -39,6 +39,9 @@ def default_handler(request):
 
 # TODO implement voice setup
 # TODO validate the rotation functionality works
+# TODO update the documentation 
+# TODO disable any client except Alexa
+# TODO submit for certification
 
 @alexa.request_handler("LaunchRequest")
 def launch_request_handler(request):

@@ -41,6 +41,7 @@ def default_handler(request):
 # TODO validate the rotation functionality works
 # TODO update the documentation 
 # TODO disable any client except Alexa
+# TODO add a catch all intent with only one custom slot that has very generic sample utterances and send slot value to SNS topic
 # TODO submit for certification
 
 @alexa.request_handler("LaunchRequest")

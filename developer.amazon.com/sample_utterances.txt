@@ -1,4 +1,5 @@
 AssignmentsIntent the assignments
+AssignmentsIntent who has what
 AssignmentsIntent to give me the assignments
 AssignmentsIntent to give us the assignments
 AssignmentsIntent {AWeek} week's assignments
@@ -10,6 +11,10 @@ FamilyMemberAssignmentIntent {FamilyMember} assignment {FMAWeek} week
 FamilyMemberAssignmentIntent {FamilyMember} {FMAWeek} week assignment
 FamilyMemberAssignmentIntent what is {FamilyMember} assignment {FMAWeek} week
 FamilyMemberAssignmentIntent what is {FamilyMember} assignment for {FMAWeek} week
+AssignmentFamilyMemberIntent who has {Assignment}
+AssignmentFamilyMemberIntent who has {Assignment} {Week} week
+AssignmentFamilyMemberIntent who is assigned to {Assignment}
+AssignmentFamilyMemberIntent who is assigned to {Assignment} {Week} week
 SetupIntent setup
 SetupIntent do setup
 SetupIntent perform setup

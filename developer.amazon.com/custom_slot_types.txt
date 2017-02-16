@@ -2,3 +2,11 @@ WEEKS
 last
 this
 next
+
+ASSIGNMENTS
+treat
+lesson
+scripture
+song
+activity
+conducting

@@ -70,8 +70,6 @@ def assignments_intent_handler(request):
 @alexa.intent_handler('FamilyMemberAssignmentIntent')
 def family_member_assignment_intent_handler(request):
     family_member = normalize_family_member(request.slots['FamilyMember'])
-    def lower_list(l):
-        return [item.lower() for item in l]
     try:
         wa = get_assignments(request.slots["FMAWeek"], request.user_id())
         family_members = lower_list(wa['family_members'])
@@ -86,6 +84,24 @@ def family_member_assignment_intent_handler(request):
     except:
         print(traceback.format_exc())
         return alexa.create_response("There was a problem retrieving {}'s assignments.".format(family_member), end_session=True)
+
+@alexa.intent_handler('AssignmentFamilyMemberIntent')
+def assignment_family_member_intent_handler(request):
+    assignment_to_find = request.slots['Assignment'].lower()
+    week = request.slots['Week']
+    try:
+        wa = get_assignments(week, request.user_id())
+        family_members = lower_list(wa['family_members'])
+        assignments = lower_list(wa['assignments'])
+        if assignment_to_find in assignments:
+            return alexa.create_response("{}'s assignment {} {}".format(family_members[assignments.index(assignment_to_find)],
+                conjunction_junction(week), assignment_to_find), end_session=True)
+        else:
+            request.session['next_intent'] = 'SetupIntent'
+            return alexa.create_response("{} isn't one of the assignments defined. Would you like to run setup again?".format(assignment_to_find))
+    except:
+        print(traceback.format_exc())
+        return alexa.create_response("There was a problem retrieving who is assigned to {}.".format(assignment_to_find), end_session=True)
 
 @alexa.intent_handler('YesIntent')
 def yes_intent_handler(request):
@@ -167,6 +183,9 @@ def get_this_week_assignments(user_id):
 
 def normalize_family_member(fm):
     return fm.replace("'s", "").lower()
+
+def lower_list(l):
+    return [item.lower() for item in l]
 
 if __name__ == "__main__":    
     import argparse

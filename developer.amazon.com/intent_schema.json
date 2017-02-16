@@ -25,6 +25,19 @@
                "type": "WEEKS" 
             }
         ]
+    },
+    {
+        "intent": "AssignmentFamilyMemberIntent",
+        "slots": [
+            {
+               "name": "Assignment",
+               "type": "ASSIGNMENTS"
+            },
+            {
+               "name": "Week",
+               "type": "WEEKS"
+            }
+        ]
     }
   ]
 }

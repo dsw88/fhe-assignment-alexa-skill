@@ -27,6 +27,8 @@ def lambda_handler(request_obj, context=None):
     if 'rotate' in request_obj:
         rotate_all_assignments(request_obj)
     else:
+        if request_obj['session']['application']['applicationId'] != 'amzn1.ask.skill.31864ddd-cc63-4274-bd5c-8f851cca8fc1':
+            raise Exception('Invalid application id')
         metadata = {}
         print(request_obj)
         # use the metadata in a handler method like so `return alexa.create_response('Hello there {}!'.format(request.metadata['user_name']))`
@@ -39,9 +41,9 @@ def default_handler(request):
 
 # TODO implement voice setup
 # TODO update the documentation 
-# TODO disable any client except Alexa
 # TODO add a catch all intent with only one custom slot that has very generic sample utterances and send slot value to SNS topic
 # TODO submit for certification
+# TODO submit a pull request to the ask library saying we are using the library
 
 @alexa.request_handler("LaunchRequest")
 def launch_request_handler(request):

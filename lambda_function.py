@@ -35,13 +35,9 @@ def lambda_handler(request_obj, context=None):
         return alexa.route_request(request_obj, metadata) 
 
 # ASK functions
-@alexa.default_handler()
-def default_handler(request):
-    return launch_request_handler(request)
 
 # TODO implement voice setup
 # TODO update the documentation 
-# TODO add a catch all intent with only one custom slot that has very generic sample utterances and send slot value to SNS topic
 # TODO submit for certification
 # TODO submit a pull request to the ask library saying we are using the library
 
@@ -51,6 +47,19 @@ def launch_request_handler(request):
         request.session['previous_message'] = "Since you haven't set up your assignments or family members yet, we'll do that now."
         return setup_intent_handler(request)
     return assignments_intent_handler(request)
+
+@alexa.default_handler()
+def default_handler(request):
+    if 'catchall' in request.slots:
+        return catchall_intent_handler(request)
+    return launch_request_handler(request)
+
+@alexa.intent_handler('CatchAllIntent')
+def catchall_intent_handler(request):
+    utterance = request.slots['catchall']
+    print("The user said, '{}', but I don't know how to handle that.".format(utterance))
+    # TODO send to SNS topic
+    return alexa.create_response("My apologies.  I don't know how to handle '{}', but I have alerted my maker so in the future I may be able to.".format(utterance))
 
 @alexa.intent_handler('SetupIntent')
 def setup_intent_handler(request):

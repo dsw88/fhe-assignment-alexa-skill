@@ -1,3 +1,4 @@
+CatchAllIntent {catchall}
 AssignmentsIntent the assignments
 AssignmentsIntent who has what
 AssignmentsIntent to give me the assignments

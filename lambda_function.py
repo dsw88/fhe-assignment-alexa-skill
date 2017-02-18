@@ -37,7 +37,6 @@ def lambda_handler(request_obj, context=None):
 def default_handler(request):
     return launch_request_handler(request)
 
-# TODO validate the rotation functionality works
 # TODO implement voice setup
 # TODO update the documentation 
 # TODO disable any client except Alexa

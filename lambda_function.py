@@ -24,8 +24,8 @@ table = dynamodb.Table(os.environ['TABLE_NAME'])
 
 # Lambda function
 def lambda_handler(request_obj, context=None):
-    if request_obj == 'rotate':
-        rotate_all_assignments(request)
+    if 'rotate' in request_obj:
+        rotate_all_assignments(request_obj)
     else:
         metadata = {}
         print(request_obj)
@@ -37,8 +37,8 @@ def lambda_handler(request_obj, context=None):
 def default_handler(request):
     return launch_request_handler(request)
 
-# TODO implement voice setup
 # TODO validate the rotation functionality works
+# TODO implement voice setup
 # TODO update the documentation 
 # TODO disable any client except Alexa
 # TODO add a catch all intent with only one custom slot that has very generic sample utterances and send slot value to SNS topic

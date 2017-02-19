@@ -47,7 +47,7 @@ def launch_request_handler(request):
     if not is_setup(request.user_id()):
         request.session['previous_message'] = setup_message
         return setup_intent_handler(request)
-    return assignments_intent_handler(request)
+    return assignments_intent_handler_bare(request)
 
 @alexa.default_handler()
 def default_handler(request):
@@ -67,12 +67,18 @@ def catchall_intent_handler(request):
 
 @alexa.intent_handler('AssignmentsIntent')
 def assignments_intent_handler(request):
+    return assignments_intent_handler_bare(request)
+
+def assignments_intent_handler_bare(request):
     if not is_setup(request.user_id()):
         request.session['previous_message'] = setup_message
         return setup_intent_handler(request)
     try:
-        assignments = get_assignments(request.slots["AWeek"], request.user_id())
-        response = "The assignments {} as follows: ".format(conjunction_junction(request.slots['AWeek'], individual=False))
+        week = 'this'
+        if hasattr(request, 'slots'):
+            week = request.slots['AWeek']
+        assignments = get_assignments(week, request.user_id())
+        response = "The assignments {} as follows: ".format(conjunction_junction(week, individual=False))
         for i, family_member in enumerate(assignments['family_members']):
             family_member = normalize_family_member(family_member)
             response += "{} {}, ".format(family_member, assignments['assignments'][i])

@@ -78,7 +78,7 @@ def assignments_intent_handler_bare(request):
         if hasattr(request, 'slots'):
             week = request.slots['AWeek']
         assignments = get_assignments(week, request.user_id())
-        response = "The assignments {} as follows: ".format(conjunction_junction(week, individual=False))
+        response = "The assignments {}: ".format(conjunction_junction(week, individual=False))
         for i, family_member in enumerate(assignments['family_members']):
             family_member = normalize_family_member(family_member)
             response += "{} {}, ".format(family_member, assignments['assignments'][i])

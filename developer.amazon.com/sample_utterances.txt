@@ -16,6 +16,3 @@ AssignmentFamilyMemberIntent who has {Assignment}
 AssignmentFamilyMemberIntent who has {Assignment} {Week} week
 AssignmentFamilyMemberIntent who is assigned to {Assignment}
 AssignmentFamilyMemberIntent who is assigned to {Assignment} {Week} week
-SetupIntent setup
-SetupIntent do setup
-SetupIntent perform setup

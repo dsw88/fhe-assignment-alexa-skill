@@ -2,15 +2,15 @@ AssignmentsIntent the assignments
 AssignmentsIntent who has what
 AssignmentsIntent to give me the assignments
 AssignmentsIntent to give us the assignments
-AssignmentsIntent {AWeek} week's assignments
-AssignmentsIntent to give me {AWeek} week's assignments
-AssignmentsIntent to give us {AWeek} week's assignments
+AssignmentsIntent {Week} week's assignments
+AssignmentsIntent to give me {Week} week's assignments
+AssignmentsIntent to give us {Week} week's assignments
 FamilyMemberAssignmentIntent {FamilyMember} assignment
 FamilyMemberAssignmentIntent what is {FamilyMember} assignment
-FamilyMemberAssignmentIntent {FamilyMember} assignment {FMAWeek} week
-FamilyMemberAssignmentIntent {FamilyMember} {FMAWeek} week assignment
-FamilyMemberAssignmentIntent what is {FamilyMember} assignment {FMAWeek} week
-FamilyMemberAssignmentIntent what is {FamilyMember} assignment for {FMAWeek} week
+FamilyMemberAssignmentIntent {FamilyMember} assignment {Week} week
+FamilyMemberAssignmentIntent {FamilyMember} {Week} week assignment
+FamilyMemberAssignmentIntent what is {FamilyMember} assignment {Week} week
+FamilyMemberAssignmentIntent what is {FamilyMember} assignment for {Week} week
 AssignmentFamilyMemberIntent who has {Assignment}
 AssignmentFamilyMemberIntent who has {Assignment} {Week} week
 AssignmentFamilyMemberIntent who is assigned to {Assignment}

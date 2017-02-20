@@ -46,7 +46,7 @@ def lambda_handler(request_obj, context=None):
 def launch_request_handler(request):
     if not is_setup(request.user_id()):
         request.session['previous_message'] = setup_message
-        return setup_intent_handler(request)
+        return setup_intent_handler_bare(request)
     return assignments_intent_handler_bare(request)
 
 @alexa.default_handler()
@@ -59,7 +59,7 @@ def default_handler(request):
 def catchall_intent_handler(request):
     if not is_setup(request.user_id()):
         request.session['previous_message'] = setup_message
-        return setup_intent_handler(request)
+        return setup_intent_handler_bare(request)
     utterance = request.slots['catchall']
     print("The user said, '{}', but I don't know how to handle that.".format(utterance))
     # TODO send to SNS topic
@@ -72,7 +72,7 @@ def assignments_intent_handler(request):
 def assignments_intent_handler_bare(request):
     if not is_setup(request.user_id()):
         request.session['previous_message'] = setup_message
-        return setup_intent_handler(request)
+        return setup_intent_handler_bare(request)
     try:
         week = 'this'
         if hasattr(request, 'slots'):
@@ -91,7 +91,7 @@ def assignments_intent_handler_bare(request):
 def family_member_assignment_intent_handler(request):
     if not is_setup(request.user_id()):
         request.session['previous_message'] = setup_message
-        return setup_intent_handler(request)
+        return setup_intent_handler_bare(request)
     family_member = normalize_family_member(request.slots['FamilyMember'])
     try:
         wa = get_assignments(request.slots["Week"], request.user_id())
@@ -102,7 +102,7 @@ def family_member_assignment_intent_handler(request):
                 conjunction_junction(request.slots['Week']), 
                 assignments[family_members.index(family_member)]), end_session=True)
         else:
-            request.session['yes_next_intent'] = 'SetupIntent'
+            request.session['yes_next_intent'] = 'setup_intent_handler_bare'
             return alexa.create_response("{} isn't one of the family members defined. Would you like to run setup again?".format(family_member))
     except:
         print(traceback.format_exc())
@@ -112,7 +112,7 @@ def family_member_assignment_intent_handler(request):
 def assignment_family_member_intent_handler(request):
     if not is_setup(request.user_id()):
         request.session['previous_message'] = setup_message
-        return setup_intent_handler(request)
+        return setup_intent_handler_bare(request)
     assignment_to_find = request.slots['Assignment'].lower()
     week = request.slots['Week']
     try:
@@ -123,7 +123,7 @@ def assignment_family_member_intent_handler(request):
             return alexa.create_response("{}'s assignment {} {}".format(family_members[assignments.index(assignment_to_find)],
                 conjunction_junction(week), assignment_to_find), end_session=True)
         else:
-            request.session['yes_next_intent'] = 'SetupIntent'
+            request.session['yes_next_intent'] = 'setup_intent_handler_bare'
             return alexa.create_response("{} isn't one of the assignments defined. Would you like to run setup again?".format(assignment_to_find))
     except:
         print(traceback.format_exc())
@@ -142,6 +142,9 @@ def stop_cancel_intent_handler(request):
 
 @alexa.intent_handler('SetupIntent')
 def setup_intent_handler(request):
+    return setup_intent_handler_bare(request)
+
+def setup_intent_handler_bare(request):
     message = " "
     if 'previous_message' in request.session:
         message = request.session['previous_message'] + message

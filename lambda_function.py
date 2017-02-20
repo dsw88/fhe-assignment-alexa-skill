@@ -21,7 +21,7 @@ import copy
 # Initialization
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(os.environ['TABLE_NAME'])
-setup_message = "Since you haven't set up your assignments or family members yet, we'll do that now. "
+setup_message = "Since you haven't set up your assignments or family members yet, we'll do that now. Say a member of your family and the assignment they have this week."
 
 # Lambda function
 def lambda_handler(request_obj, context=None):
@@ -38,6 +38,7 @@ def lambda_handler(request_obj, context=None):
 # ASK functions
 
 # TODO implement a way to setup that anyone could do
+# TODO refactor the catchall to use AMAZON.LITERAL
 # TODO update the documentation 
 # TODO submit for certification
 # TODO submit a pull request to the ask library saying we are using the library
@@ -148,7 +149,30 @@ def setup_intent_handler_bare(request):
     message = " "
     if 'previous_message' in request.session:
         message = request.session['previous_message'] + message
+        request.session.pop('previous_message')
     return alexa.create_response(message)
+
+def setup_intent_handler_done_bare(request):
+    request.session.pop('previous_message')
+    return alexa.create_response("Setup complete.")
+
+@alexa.intent_handler('FamilyMemberAssignmentSetupIntent')
+def family_member_assignment_setup_intent_handler(request):
+    family_member = request.slots['FamilyMember']
+    assignment = request.slots['Assignment']
+
+    assignments = get_assignments('this', request.user_id)
+    if 'Item' in assignments:
+        item = assignments['Item']
+        item.family_members.append(family_member)
+        item.assignments.append(assignment)
+    else:
+        item = {'id': request.user_id, 'family_members': [family_member], 'assignments': [assignment]}
+    table.put_item(Item=item)
+    request.session['previous_message'] = 'Say the next family member and assignment you want to add.'
+    request.session['yes_next_intent'] = 'setup_intent_handler_bare'
+    request.session['no_next_intent'] = 'setup_intent_handler_done_bare'
+    return alexa.create_response("{} added to {}. Would you like to add another family member and assignment?".format(family_member, assignment), end_session=True)
 
 @alexa.intent_handler('AMAZON.YesIntent')
 def yes_intent_handler(request):

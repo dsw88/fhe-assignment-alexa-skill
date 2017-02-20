@@ -15,6 +15,9 @@ AssignmentFamilyMemberIntent who has {Assignment}
 AssignmentFamilyMemberIntent who has {Assignment} {Week} week
 AssignmentFamilyMemberIntent who is assigned to {Assignment}
 AssignmentFamilyMemberIntent who is assigned to {Assignment} {Week} week
+FamilyMemberAssignmentSetupIntent {FamilyMember} {Assignment}
+FamilyMemberAssignmentSetupIntent {FamilyMember} is assigned to {Assignment}
+FamilyMemberAssignmentSetupIntent {FamilyMember} has {Assignment}
 CatchAllIntent {catchall}
 CatchAllIntent {catchall} {catchall}
 CatchAllIntent {catchall} {catchall} {catchall}

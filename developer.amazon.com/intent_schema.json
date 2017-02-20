@@ -36,6 +36,19 @@
         ]
     },
     {
+        "intent": "FamilyMemberAssignmentSetupIntent",
+        "slots": [
+            {
+               "name": "FamilyMember",
+               "type": "AMAZON.US_FIRST_NAME" 
+            },
+            {
+               "name": "Assignment",
+               "type": "ASSIGNMENTS"
+            }
+        ]
+    },
+    {
         "intent": "AssignmentFamilyMemberIntent",
         "slots": [
             {

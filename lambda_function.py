@@ -162,17 +162,17 @@ def family_member_assignment_setup_intent_handler(request):
     assignment = request.slots['Assignment']
 
     assignments = get_assignments('this', request.user_id())
-    if 'Item' in assignments:
+    if assignments and 'Item' in assignments:
         item = assignments['Item']
         item.family_members.append(family_member)
         item.assignments.append(assignment)
     else:
-        item = {'id': request.user_id, 'family_members': [family_member], 'assignments': [assignment]}
+        item = {'id': request.user_id(), 'family_members': [family_member], 'assignments': [assignment]}
     table.put_item(Item=item)
     request.session['previous_message'] = 'Say the next family member and assignment you want to add.'
     request.session['yes_next_intent'] = 'setup_intent_handler_bare'
     request.session['no_next_intent'] = 'setup_intent_handler_done_bare'
-    return alexa.create_response("{} added to {}. Would you like to add another family member and assignment?".format(family_member, assignment), end_session=True)
+    return alexa.create_response("{} added to {}. Would you like to add another family member and assignment?".format(family_member, assignment), end_session=False)
 
 @alexa.intent_handler('AMAZON.YesIntent')
 def yes_intent_handler(request):

@@ -161,7 +161,7 @@ def family_member_assignment_setup_intent_handler(request):
     family_member = request.slots['FamilyMember']
     assignment = request.slots['Assignment']
 
-    assignments = get_assignments('this', request.user_id)
+    assignments = get_assignments('this', request.user_id())
     if 'Item' in assignments:
         item = assignments['Item']
         item.family_members.append(family_member)

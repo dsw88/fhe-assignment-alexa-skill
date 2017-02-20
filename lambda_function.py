@@ -205,7 +205,7 @@ def conjunction_junction(week, individual=True):
 
 def get_assignments(week, user_id):
     """
-    Returns the assignments in {'id': aaaaaaaa, 'family_members': ['person': 'person2'], 'assignments': ['assignment1', 'assignment2']} format
+    Returns the assignments in {'id': aaaaaaaa, 'family_members': ['person', 'person2'], 'assignments': ['assignment1', 'assignment2']} format
     """
     this_week_assignments = get_this_week_assignments(user_id)
     if week == 'last':

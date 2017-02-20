@@ -76,7 +76,7 @@ def assignments_intent_handler_bare(request):
     try:
         week = 'this'
         if hasattr(request, 'slots'):
-            week = request.slots['AWeek']
+            week = request.slots['Week']
         assignments = get_assignments(week, request.user_id())
         response = "The assignments {}: ".format(conjunction_junction(week, individual=False))
         for i, family_member in enumerate(assignments['family_members']):
@@ -94,12 +94,12 @@ def family_member_assignment_intent_handler(request):
         return setup_intent_handler(request)
     family_member = normalize_family_member(request.slots['FamilyMember'])
     try:
-        wa = get_assignments(request.slots["FMAWeek"], request.user_id())
+        wa = get_assignments(request.slots["Week"], request.user_id())
         family_members = lower_list(wa['family_members'])
         assignments = lower_list(wa['assignments'])
         if family_member in family_members:
             return alexa.create_response("{}'s assignment {} {}".format(family_member, 
-                conjunction_junction(request.slots['FMAWeek']), 
+                conjunction_junction(request.slots['Week']), 
                 assignments[family_members.index(family_member)]), end_session=True)
         else:
             request.session['yes_next_intent'] = 'SetupIntent'

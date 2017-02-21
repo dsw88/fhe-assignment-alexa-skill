@@ -154,18 +154,17 @@ def setup_intent_handler_bare(request):
 
 def setup_intent_handler_done_bare(request):
     request.session.pop('previous_message')
-    return alexa.create_response("Setup complete.")
+    return alexa.create_response("Setup complete.", end_session=True)
 
 @alexa.intent_handler('FamilyMemberAssignmentSetupIntent')
 def family_member_assignment_setup_intent_handler(request):
     family_member = request.slots['FamilyMember']
     assignment = request.slots['Assignment']
 
-    assignments = get_assignments('this', request.user_id())
-    if assignments and 'Item' in assignments:
-        item = assignments['Item']
-        item.family_members.append(family_member)
-        item.assignments.append(assignment)
+    item = get_assignments('this', request.user_id())
+    if item:
+        item['family_members'].append(family_member)
+        item['assignments'].append(assignment)
     else:
         item = {'id': request.user_id(), 'family_members': [family_member], 'assignments': [assignment]}
     table.put_item(Item=item)

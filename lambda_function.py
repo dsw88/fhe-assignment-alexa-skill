@@ -37,8 +37,8 @@ def lambda_handler(request_obj, context=None):
 
 # ASK functions
 
-# TODO implement a way to setup that anyone could do
 # TODO refactor the catchall to use AMAZON.LITERAL
+# TODO implement change/delete of setup records
 # TODO update the documentation 
 # TODO submit for certification
 # TODO submit a pull request to the ask library saying we are using the library

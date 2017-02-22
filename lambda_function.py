@@ -37,7 +37,6 @@ def lambda_handler(request_obj, context=None):
 
 # ASK functions
 
-# TODO implement change/delete of setup records
 # TODO update the documentation 
 # TODO submit for certification
 # TODO submit a pull request to the ask library saying we are using the library
@@ -146,10 +145,18 @@ def setup_intent_handler(request):
 
 def setup_intent_handler_bare(request):
     message = " "
+    if is_setup(request):
+        message = "You're setup is done. Would you like to redo it?"
+        request.session['yes_next_intent'] = 'delete_setup'
+        return alexa.create_response(message)
     if 'previous_message' in request.session:
         message = request.session['previous_message'] + message
         request.session.pop('previous_message')
     return alexa.create_response(message)
+
+def delete_setup(request):
+    table.delete_item(Key=request.user_id())
+    return alexa.create_response("Say a member of your family and the assignment they have this week. For example, you could say, 'Joseph has lesson'.")
 
 def setup_intent_handler_done_bare(request):
     request.session.pop('previous_message')
@@ -175,13 +182,17 @@ def family_member_assignment_setup_intent_handler(request):
 @alexa.intent_handler('AMAZON.YesIntent')
 def yes_intent_handler(request):
     if 'yes_next_intent' in request.session:
-        return globals()[request.session['yes_next_intent']](request)
+        next_intent = request.session['yes_next_intent']
+        request.session.pop('yes_next_intent')
+        return globals()[next_intent](request)
     return alexa.create_response(" ", end_session=True)
     
 @alexa.intent_handler('AMAZON.NoIntent')
 def no_intent_handler(request):
     if 'no_next_intent' in request.session:
-        return globals()[request.session['no_next_intent']](request)
+        next_intent = request.session['no_next_intent']
+        request.session.pop('no_next_intent')
+        return globals()[next_intent](request)
     return alexa.create_response(" ", end_session=True)
 
 # Helper functions

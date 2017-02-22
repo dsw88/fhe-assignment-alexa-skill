@@ -12,9 +12,6 @@ activity
 conducting
 prayer
 
-CATCHALL
-catchall
-
 AMAZON.US_FIRST_NAME
 dad
 daddy

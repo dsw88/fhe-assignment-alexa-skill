@@ -18,11 +18,36 @@ AssignmentFamilyMemberIntent who is assigned to {Assignment} {Week} week
 FamilyMemberAssignmentSetupIntent {FamilyMember} {Assignment}
 FamilyMemberAssignmentSetupIntent {FamilyMember} is assigned to {Assignment}
 FamilyMemberAssignmentSetupIntent {FamilyMember} has {Assignment}
-CatchAllIntent {catchall}
-CatchAllIntent {catchall} {catchall}
-CatchAllIntent {catchall} {catchall} {catchall}
-CatchAllIntent {catchall} {catchall} {catchall} {catchall}
-CatchAllIntent {catchall} {catchall} {catchall} {catchall} {catchall}
-CatchAllIntent {catchall} {catchall} {catchall} {catchall} {catchall} {catchall}
-CatchAllIntent {catchall} {catchall} {catchall} {catchall} {catchall} {catchall} {catchall}
-CatchAllIntent {catchall} {catchall} {catchall} {catchall} {catchall} {catchall} {catchall} {catchall}
+SetupIntent setup
+SetupIntent do setup
+SetupIntent run setup
+SetupIntent do the setup
+SetupIntent run the setup
+SetupIntent setup assignments
+SetupIntent setup family members
+SetupIntent setup people
+SetupIntent setup assignments and family members
+SetupIntent setup assignments and people
+SetupIntent setup people and assignments
+SetupIntent setup family members and assignments
+CatchAllIntent {feedback|catchall}
+CatchAllIntent {submit feedback|catchall}
+CatchAllIntent {how can we|catchall}
+CatchAllIntent {how do i|catchall}
+CatchAllIntent {how can i add|catchall}
+CatchAllIntent {how can we add|catchall}
+CatchAllIntent {how do i add|catchall}
+CatchAllIntent {how can we change assignments|catchall}
+CatchAllIntent {how do i add family members|catchall}
+CatchAllIntent {how do i add assignments|catchall}
+CatchAllIntent {how do i add an assignment|catchall}
+CatchAllIntent {how do we add|catchall}
+CatchAllIntent {how do we add people|catchall}
+CatchAllIntent {what is the wording for adding people|catchall}
+CatchAllIntent {how can i add a new family member|catchall}
+CatchAllIntent {add the ability to delete activities|catchall}
+CatchAllIntent {i would like to make a feature request|catchall}
+CatchAllIntent {add the ability to delete family members|catchall}
+CatchAllIntent {add the ability to delete family members|catchall}
+CatchAllIntent {what's the deal with all the downtime|catchall}
+CatchAllIntent {why can't i add swimming as an activity|catchall}

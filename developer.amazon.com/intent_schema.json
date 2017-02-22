@@ -1,19 +1,6 @@
 {
   "intents": [
     {
-        "intent": "CatchAllIntent",
-        "slots": [
-            {
-               "name": "catchall",
-               "type": "CATCHALL"
-            }
-        ]
-    },
-    {
-        "intent": "SetupIntent",
-        "slots": []
-    },
-    {
         "intent": "AssignmentsIntent",
         "slots": [
             {
@@ -75,6 +62,19 @@
     },
     {
         "intent": "AMAZON.HelpIntent"
+    },
+    {
+        "intent": "SetupIntent",
+        "slots": []
+    },
+    {
+        "intent": "CatchAllIntent",
+        "slots": [
+            {
+               "name": "catchall",
+               "type": "AMAZON.LITERAL"
+            }
+        ]
     }
   ]
 }

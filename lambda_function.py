@@ -145,7 +145,7 @@ def setup_intent_handler(request):
 
 def setup_intent_handler_bare(request):
     message = " "
-    if is_setup(request):
+    if is_setup(request.user_id()):
         message = "You're setup is done. Would you like to redo it?"
         request.session['yes_next_intent'] = 'delete_setup'
         return alexa.create_response(message)
@@ -264,7 +264,9 @@ def get_this_week_assignments(user_id):
     return None
 
 def normalize_family_member(fm):
-    return fm.replace("'s", "").lower()
+    if fm:
+        return fm.replace("'s", "").lower()
+    return fm
 
 def lower_list(l):
     return [item.lower() for item in l]

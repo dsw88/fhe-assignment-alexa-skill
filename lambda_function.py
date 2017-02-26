@@ -20,6 +20,7 @@ import copy
 
 # Initialization
 dynamodb = boto3.resource('dynamodb')
+sns = boto3.client('sns')
 table = dynamodb.Table(os.environ['TABLE_NAME'])
 setup_message = "Since you haven't set up your assignments or family members yet, we'll do that now. Say a member of your family and the assignment they have this week."
 
@@ -33,7 +34,13 @@ def lambda_handler(request_obj, context=None):
         metadata = {}
         print(request_obj)
         # use the metadata in a handler method like so `return alexa.create_response('Hello there {}!'.format(request.metadata['user_name']))`
-        return alexa.route_request(request_obj, metadata) 
+        try:
+            return alexa.route_request(request_obj, metadata) 
+        except:
+            message = traceback.format_exc()
+            print(message)
+            sns.publish(Message=message, Subject="Error on FHE Alexa Skill", TopicArn=os.environ["TOPIC_ARN"])
+            return alexa.create_response("There was a problem. Please try again.", end_session=True)
 
 # ASK functions
 
@@ -60,8 +67,9 @@ def catchall_intent_handler(request):
         request.session['previous_message'] = setup_message
         return setup_intent_handler_bare(request)
     utterance = request.slots['catchall']
-    print("The user said, '{}', but I don't know how to handle that.".format(utterance))
-    # TODO send to SNS topic
+    message = u"The user said, '{}', but I don't know how to handle that.".format(utterance)
+    print(message)
+    sns.publish(Message=message, Subject="User feedback on FHE Alexa Skill", TopicArn=os.environ["TOPIC_ARN"])
     return alexa.create_response("My apologies.  I don't know how to handle '{}', but I have alerted my maker so in the future I may be able to.".format(utterance))
 
 @alexa.intent_handler('AssignmentsIntent')

@@ -23,9 +23,15 @@ Resources:
                 - 'dynamodb:UpdateItem'
               Resource:
                 - !Join ["", [!Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/", !Ref FHEAlexaSkillTable]]
+            - Effect: Allow
+              Action:
+                - 'sns:Publish'
+              Resource:
+                - !Ref FHEAlexaSkillSNSTopic
       Environment:
         Variables:
           TABLE_NAME: !Ref FHEAlexaSkillTable
+          TOPIC_ARN: !Ref FHEAlexaSkillSNSTopic
       Events:
         AlexaEvent:
           Type: AlexaSkill
@@ -44,7 +50,15 @@ Resources:
      ProvisionedThroughput:
        ReadCapacityUnits: 1
        WriteCapacityUnits: 1
-Outputs:
+  FHEAlexaSkillSNSTopic: 
+    Type: "AWS::SNS::Topic"
+    Properties: 
+      TopicName: "FHEAlexaSkillSNSTopic"
+      Subscription: 
+        - 
+          Endpoint: "info@benchline.org"
+          Protocol: "email"
+Outputls:
   LambdaArn:
     Value: !GetAtt FHEAlexaLambda.Arn
     Export: 

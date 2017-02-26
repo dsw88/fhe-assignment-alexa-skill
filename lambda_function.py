@@ -44,7 +44,6 @@ def lambda_handler(request_obj, context=None):
 
 # ASK functions
 
-# TODO submit for certification
 # TODO submit a pull request to the ask library saying we are using the library
 
 @alexa.request_handler("LaunchRequest")

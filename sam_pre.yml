@@ -58,7 +58,7 @@ Resources:
         - 
           Endpoint: "info@benchline.org"
           Protocol: "email"
-Outputls:
+Outputs:
   LambdaArn:
     Value: !GetAtt FHEAlexaLambda.Arn
     Export: 

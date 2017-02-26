@@ -169,6 +169,40 @@ def setup_intent_handler_done_bare(request):
     request.session.pop('previous_message')
     return alexa.create_response("Setup complete.", end_session=True)
 
+@alexa.intent_handler('DeleteAssignmentIntent')
+def delete_assignment_intent(request):
+    if not is_setup(request.user_id()):
+        request.session['previous_message'] = setup_message
+        return setup_intent_handler_bare(request)
+
+    assignment = request.slots['Assignment']
+    item = get_assignments('this', request.user_id())
+    if assignment in item['assignments']:
+        family_member = item['family_members'][item['assignments'].index(assignment)]
+        item['assignments'].pop(assignment)
+        item['family_members'].pop(family_member)
+        table.put_item(Item=item)
+        return alexa.create_response("deleted {} and the family member assigned to it from your configuration.".format(family_member), end_session=True)
+    else:
+        return alexa.create_response("{} isn't an assignment in your configuration.".format(assignment), end_session=True)
+
+@alexa.intent_handler('DeleteFamilyMemberIntent')
+def delete_family_member_intent(request):
+    if not is_setup(request.user_id()):
+        request.session['previous_message'] = setup_message
+        return setup_intent_handler_bare(request)
+
+    family_member = request.slots['FamilyMember']
+    item = get_assignments('this', request.user_id())
+    if family_member in item['assignments']:
+        assignment = item['assignments'][item['family_members'].index(family_member)]
+        item['assignments'].pop(assignment)
+        item['family_members'].pop(family_member)
+        table.put_item(Item=item)
+        return alexa.create_response("deleted {} and their assignment from your configuration.".format(family_member), end_session=True)
+    else:
+        return alexa.create_response("{} isn't a family member in your configuration.".format(family_member), end_session=True)
+
 @alexa.intent_handler('FamilyMemberAssignmentSetupIntent')
 def family_member_assignment_setup_intent_handler(request):
     family_member = request.slots['FamilyMember']

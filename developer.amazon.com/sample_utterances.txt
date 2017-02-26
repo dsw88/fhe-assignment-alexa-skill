@@ -18,7 +18,15 @@ AssignmentFamilyMemberIntent who is assigned to {Assignment} {Week} week
 FamilyMemberAssignmentSetupIntent {FamilyMember} {Assignment}
 FamilyMemberAssignmentSetupIntent {FamilyMember} is assigned to {Assignment}
 FamilyMemberAssignmentSetupIntent {FamilyMember} has {Assignment}
+DeleteFamilyMemberIntent delete the family member {FamilyMember}
+DeleteFamilyMemberIntent delete family member {FamilyMember}
+DeleteAssignmentIntent delete the assignment {Assignment}
+DeleteAssignmentIntent delete assignment {Assignment}
 SetupIntent setup
+SetupIntent setup config
+SetupIntent setup configuration
+SetupIntent config 
+SetupIntent configuration
 SetupIntent do setup
 SetupIntent run setup
 SetupIntent do the setup

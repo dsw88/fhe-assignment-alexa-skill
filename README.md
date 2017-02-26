@@ -31,4 +31,10 @@ Once the setup process interact with your new skill like so:
 ** "Joseph has Treat" if you have a family member named Joseph who is assigned to treat this week
 ** "Joseph is assigned Treat" if you have a family member named Joseph who is assigned to treat this week
 
+Sometimes Alexa doesn't always hear you correctly, the next two utterances let you fix that.
+* "Alexa, delete the family member Joseph" 
+* "Alexa, delete the assignment Treat" 
+
+You can always start the setup over and fix errors by saying, "Alexa, tell FHE assignments to run setup."
+
 The skill also tries hard to catch any unknown utterances you say to it so that the developer can enhance the skill with your feedback.

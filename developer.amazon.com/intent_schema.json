@@ -49,6 +49,24 @@
         ]
     },
     {
+        "intent": "DeleteFamilyMemberIntent",
+        "slots": [
+            {
+               "name": "FamilyMember",
+               "type": "AMAZON.US_FIRST_NAME"
+            }
+        ]
+    },
+    {
+        "intent": "DeleteAssignmentIntent",
+        "slots": [
+            {
+               "name": "Assignment",
+               "type": "ASSIGNMENTS"
+            }
+        ]
+    },
+    {
         "intent": "AMAZON.YesIntent"
     },
     {

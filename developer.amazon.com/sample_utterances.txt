@@ -20,8 +20,12 @@ FamilyMemberAssignmentSetupIntent {FamilyMember} is assigned to {Assignment}
 FamilyMemberAssignmentSetupIntent {FamilyMember} has {Assignment}
 DeleteFamilyMemberIntent delete the family member {FamilyMember}
 DeleteFamilyMemberIntent delete family member {FamilyMember}
+DeleteFamilyMemberIntent remove the family member {FamilyMember}
+DeleteFamilyMemberIntent remove family member {FamilyMember}
 DeleteAssignmentIntent delete the assignment {Assignment}
 DeleteAssignmentIntent delete assignment {Assignment}
+DeleteAssignmentIntent remove the assignment {Assignment}
+DeleteAssignmentIntent remove assignment {Assignment}
 SetupIntent setup
 SetupIntent setup config
 SetupIntent setup configuration

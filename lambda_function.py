@@ -179,8 +179,8 @@ def delete_assignment_intent(request):
     item = get_assignments('this', request.user_id())
     if assignment in item['assignments']:
         family_member = item['family_members'][item['assignments'].index(assignment)]
-        item['assignments'].pop(assignment)
-        item['family_members'].pop(family_member)
+        item['assignments'].remove(assignment)
+        item['family_members'].remove(family_member)
         table.put_item(Item=item)
         return alexa.create_response("deleted {} and the family member assigned to it from your configuration.".format(family_member), end_session=True)
     else:
@@ -196,8 +196,8 @@ def delete_family_member_intent(request):
     item = get_assignments('this', request.user_id())
     if family_member in item['family_members']:
         assignment = item['assignments'][item['family_members'].index(family_member)]
-        item['assignments'].pop(assignment)
-        item['family_members'].pop(family_member)
+        item['assignments'].remove(assignment)
+        item['family_members'].remove(family_member)
         table.put_item(Item=item)
         return alexa.create_response("deleted {} and their assignment from your configuration.".format(family_member), end_session=True)
     else:

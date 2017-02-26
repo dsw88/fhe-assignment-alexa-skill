@@ -28,8 +28,8 @@ Once the setup process interact with your new skill like so:
 * "Alexa, ask FHE assignments who is assigned to Treat next week" if you have Treat as one of your family home evening assignments
 * "Alexa, tell FHE assignemnts to run setup"
 * "Alexa, tell FHE assignemnts to setup assignments"
-** "Joseph has Treat" if you have a family member named Joseph who is assigned to treat this week
-** "Joseph is assigned Treat" if you have a family member named Joseph who is assigned to treat this week
+  * "Joseph has Treat" if you have a family member named Joseph who is assigned to treat this week
+  * "Joseph is assigned Treat" if you have a family member named Joseph who is assigned to treat this week
 
 Sometimes Alexa doesn't always hear you correctly, the next two utterances let you fix that.
 * "Alexa, delete the family member Joseph" 

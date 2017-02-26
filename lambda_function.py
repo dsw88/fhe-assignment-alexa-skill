@@ -194,7 +194,7 @@ def delete_family_member_intent(request):
 
     family_member = request.slots['FamilyMember']
     item = get_assignments('this', request.user_id())
-    if family_member in item['assignments']:
+    if family_member in item['family_members']:
         assignment = item['assignments'][item['family_members'].index(family_member)]
         item['assignments'].pop(assignment)
         item['family_members'].pop(family_member)

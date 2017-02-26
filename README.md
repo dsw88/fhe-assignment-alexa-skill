@@ -38,3 +38,5 @@ Sometimes Alexa doesn't always hear you correctly, the next two utterances let y
 You can always start the setup over and fix errors by saying, "Alexa, tell FHE assignments to run setup."
 
 The skill also tries hard to catch any unknown utterances you say to it so that the developer can enhance the skill with your feedback.
+
+Home Icon from: https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Home_Icon.svg/2000px-Home_Icon.svg.png

@@ -70,7 +70,7 @@ def catchall_intent_handler(request):
     message = u"The user said, '{}', but I don't know how to handle that.".format(utterance)
     print(message)
     sns.publish(Message=message, Subject="User feedback on FHE Alexa Skill", TopicArn=os.environ["TOPIC_ARN"])
-    return alexa.create_response("My apologies.  I don't know how to handle '{}', but I have alerted my maker so in the future I may be able to.".format(utterance))
+    return alexa.create_response("My apologies.  I don't know how to handle '{}', but I have alerted my maker so in the future I may be able to.".format(utterance), end_session=True)
 
 @alexa.intent_handler('AssignmentsIntent')
 def assignments_intent_handler(request):

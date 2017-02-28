@@ -38,7 +38,7 @@ Resources:
         WeeklyRotateEvent:
           Type: Schedule
           Properties:
-            Schedule: 'cron(0 0 ? * TUE *)'
+            Schedule: 'cron(0 7 ? * TUE *)'
             Input: '{"rotate": true}'
     DependsOn: FHEAlexaSkillTable
   FHEAlexaSkillTable:                   

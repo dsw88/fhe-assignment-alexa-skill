@@ -14,8 +14,8 @@ ddd:
   ubiquitous_language_url: 
   context_map_url: 
 links:
-  system_documentation_url: https://github.com/byu-oit-appdev/fhe-assignment-alexa-skill
-  source_repo_url: https://github.com/byu-oit-appdev/fhe-assignment-alexa-skill
+  system_documentation_url: https://github.com/byu-oit/fhe-assignment-alexa-skill
+  source_repo_url: https://github.com/byu-oit/fhe-assignment-alexa-skill
   swagger_urls:
 microservice: False
 technologies_used:
@@ -24,7 +24,7 @@ technologies_used:
 stages:
   production:
     urls:
-      product_page: https://github.com/byu-oit-appdev/fhe-assignment-alexa-skill
+      product_page: https://github.com/byu-oit/fhe-assignment-alexa-skill
       physical_url: 
       virtual_url: 
     hosting_location: 
@@ -48,5 +48,5 @@ tags:
   env: prd
   app: fhe-assignment-alexa-skill
   team: gro:AD-Student Life Applications
-federation_json_url: https://raw.githubusercontent.com/byu-oit-appdev/fhe-assignment-alexa-skill/master/.repo-meta.yml
+federation_json_url: https://raw.githubusercontent.com/byu-oit/fhe-assignment-alexa-skill/master/.repo-meta.yml
 

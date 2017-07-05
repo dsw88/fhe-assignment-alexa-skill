@@ -1,0 +1,19 @@
+version: 0.1
+
+phases:
+  install:
+    commands:
+      - pip install -r requirements.txt -t .
+  pre_build:
+    commands:
+      - #python lambda_function.py test --verbose True
+  build:
+    commands:
+      - echo "Nothing to run in the build phase..."
+  post_build:
+    commands:
+      - echo "Nothing to run in the post_build phase..."
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: no

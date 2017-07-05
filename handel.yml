@@ -1,0 +1,34 @@
+version: 1
+
+name: fhe-alexa-skill
+
+environments:
+  prd:
+    function:
+      type: lambda
+      path_to_code: .
+      handler: lambda_function.lambda_handler
+      runtime: python3.6
+      memory: 128
+      timeout: 10
+      tags:
+        app: fhe-alexa-skill
+      dependencies:
+        - db
+        - topic
+    schedule:
+      type: cloudwatchevent
+      schedule: 'cron(0 7 ? * TUE *)'
+      event_consumers:
+      - service_name: function
+        event_input: '{"rotate": true}'
+    topic:
+      type: sns
+    db:
+      type: dynamodb
+      partition_key: # Required, NOT updateable
+        name: id
+        type: String
+      provisioned_throughput:
+        read_capcity_units: 1
+        write_capacity_units: 1

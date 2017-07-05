@@ -1,0 +1,17 @@
+version: 1
+
+pipelines:
+  prd:
+    phases:
+    - type: github
+      name: GitHub
+      owner: byu-oit
+      repo: fhe-assignment-alexa-skill
+      branch: master
+    - type: codebuild
+      name: Build
+      build_image: python:3.6
+    - type: handel
+      name: PrdDeploy
+      environments_to_deploy:
+      - prd

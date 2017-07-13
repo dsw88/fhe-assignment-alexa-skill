@@ -1,52 +1,51 @@
---- 
-$schemaver: 1.1
-name: fhe-assignment-alexa-skill
-type: Mobile App
-aliases:
-short_description: An Alexa skill to record which family members have what assignments each week for Family Home Evening and rotate them automatically each week.
-assignment_group: gro:AD-Student Life Applications
-notes: 
-maintained_by:
-  - pauldeden
-developed_by_byu: True
-ddd:
-  business_domain: 
-  ubiquitous_language_url: 
-  context_map_url: 
-links:
-  system_documentation_url: https://github.com/byu-oit/fhe-assignment-alexa-skill
-  source_repo_url: https://github.com/byu-oit/fhe-assignment-alexa-skill
-  swagger_urls:
-microservice: False
-technologies_used:
-  - Python
-  - Shell
-stages:
-  production:
-    urls:
-      product_page: https://github.com/byu-oit/fhe-assignment-alexa-skill
-      physical_url: 
-      virtual_url: 
-    hosting_location: 
-    aws_account: 
-    relationships: 
-      depends_on:
-        db_read_write:
-        db_read_only:
-        software:
-      supports:
-        software:
-        service:
-      reverse_proxy: 
-      runs_on:
-        server_cluster:
-        virtual_server:
-        rack_server:
-        blade_server:
-tags:
-  data-sensitivity: confidential
-  env: prd
-  app: fhe-assignment-alexa-skill
-  team: gro:AD-Student Life Applications
-federation_json_url: https://raw.githubusercontent.com/byu-oit/fhe-assignment-alexa-skill/master/.repo-meta.yml
-
+---
+$schemaver: '2.0'
+repo_url: https://github.com/byu-oit/fhe-assignment-alexa-skill
+software:
+  - name: fhe-assignment-alexa-skill
+    type: Mobile App
+    aliases:
+    short_description: An Alexa skill to record which family members have what assignments
+        each week for Family Home Evening and rotate them automatically each week.
+    assignment_group: gro:AD-Student Life Applications
+    notes:
+    maintained_by:
+      - pauldeden
+    developed_by_byu: true
+    ddd:
+        business_domain:
+        ubiquitous_language_url:
+        context_map_url:
+    links:
+        system_documentation_url: https://github.com/byu-oit/fhe-assignment-alexa-skill
+        swagger_urls:
+    microservice: false
+    technologies_used:
+      - Python
+      - Shell
+    stages:
+        production:
+            urls:
+                product_page: https://github.com/byu-oit/fhe-assignment-alexa-skill
+                physical_url:
+                virtual_url:
+            hosting_location:
+            aws_account:
+            relationships:
+                depends_on:
+                    db_read_write:
+                    db_read_only:
+                    software:
+                supports:
+                    software:
+                    service:
+                reverse_proxy:
+                runs_on:
+                    server_cluster:
+                    virtual_server:
+                    rack_server:
+                    blade_server:
+    tags:
+        data-sensitivity: confidential
+        app: fhe-assignment-alexa-skill
+        team: gro:AD-Student Life Applications

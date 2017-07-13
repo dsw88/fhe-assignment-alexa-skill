@@ -7,7 +7,7 @@ pipelines:
     phases:
     - type: github
       name: GitHub
-      owner: byu-oit
+      owner: pauldeden
       repo: fhe-assignment-alexa-skill
       branch: master
     - type: codebuild

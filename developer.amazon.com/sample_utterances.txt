@@ -5,27 +5,6 @@ AssignmentsIntent to give us the assignments
 AssignmentsIntent {Week} week's assignments
 AssignmentsIntent to give me {Week} week's assignments
 AssignmentsIntent to give us {Week} week's assignments
-FamilyMemberAssignmentIntent {FamilyMember} assignment
-FamilyMemberAssignmentIntent what is {FamilyMember} assignment
-FamilyMemberAssignmentIntent {FamilyMember} assignment {Week} week
-FamilyMemberAssignmentIntent {FamilyMember} {Week} week assignment
-FamilyMemberAssignmentIntent what is {FamilyMember} assignment {Week} week
-FamilyMemberAssignmentIntent what is {FamilyMember} assignment for {Week} week
-AssignmentFamilyMemberIntent who has {Assignment}
-AssignmentFamilyMemberIntent who has {Assignment} {Week} week
-AssignmentFamilyMemberIntent who is assigned to {Assignment}
-AssignmentFamilyMemberIntent who is assigned to {Assignment} {Week} week
-FamilyMemberAssignmentSetupIntent {FamilyMember} {Assignment}
-FamilyMemberAssignmentSetupIntent {FamilyMember} is assigned to {Assignment}
-FamilyMemberAssignmentSetupIntent {FamilyMember} has {Assignment}
-DeleteFamilyMemberIntent delete the family member {FamilyMember}
-DeleteFamilyMemberIntent delete family member {FamilyMember}
-DeleteFamilyMemberIntent remove the family member {FamilyMember}
-DeleteFamilyMemberIntent remove family member {FamilyMember}
-DeleteAssignmentIntent delete the assignment {Assignment}
-DeleteAssignmentIntent delete assignment {Assignment}
-DeleteAssignmentIntent remove the assignment {Assignment}
-DeleteAssignmentIntent remove assignment {Assignment}
 SetupIntent setup
 SetupIntent setup config
 SetupIntent setup configuration
@@ -42,66 +21,3 @@ SetupIntent setup assignments and family members
 SetupIntent setup assignments and people
 SetupIntent setup people and assignments
 SetupIntent setup family members and assignments
-CatchAllIntent {feedback|catchall}
-CatchAllIntent {submit feedback|catchall}
-CatchAllIntent {how can we|catchall}
-CatchAllIntent {how do i|catchall}
-CatchAllIntent {how can i add|catchall}
-CatchAllIntent {how can we add|catchall}
-CatchAllIntent {how do i add|catchall}
-CatchAllIntent {how can we change assignments|catchall}
-CatchAllIntent {how do i add family members|catchall}
-CatchAllIntent {how do i add assignments|catchall}
-CatchAllIntent {how do i add an assignment|catchall}
-CatchAllIntent {how do we add|catchall}
-CatchAllIntent {how do we add people|catchall}
-CatchAllIntent {what is the wording for adding people|catchall}
-CatchAllIntent {how can i add a new family member|catchall}
-CatchAllIntent {add the ability to delete activities|catchall}
-CatchAllIntent {i would like to make a feature request|catchall}
-CatchAllIntent {add the ability to delete family members|catchall}
-CatchAllIntent {add the ability to delete family members|catchall}
-CatchAllIntent {what's the deal with all the downtime|catchall}
-CatchAllIntent {why can't i add swimming as an activity|catchall}
-CatchAllIntent give feedback {feedback|catchall}
-CatchAllIntent give feedback {submit feedback|catchall}
-CatchAllIntent give feedback {how can we|catchall}
-CatchAllIntent give feedback {how do i|catchall}
-CatchAllIntent give feedback {how can i add|catchall}
-CatchAllIntent give feedback {how can we add|catchall}
-CatchAllIntent give feedback {how do i add|catchall}
-CatchAllIntent give feedback {how can we change assignments|catchall}
-CatchAllIntent give feedback {how do i add family members|catchall}
-CatchAllIntent give feedback {how do i add assignments|catchall}
-CatchAllIntent give feedback {how do i add an assignment|catchall}
-CatchAllIntent give feedback {how do we add|catchall}
-CatchAllIntent give feedback {how do we add people|catchall}
-CatchAllIntent give feedback {what is the wording for adding people|catchall}
-CatchAllIntent give feedback {how can i add a new family member|catchall}
-CatchAllIntent give feedback {add the ability to delete activities|catchall}
-CatchAllIntent give feedback {i would like to make a feature request|catchall}
-CatchAllIntent give feedback {add the ability to delete family members|catchall}
-CatchAllIntent give feedback {add the ability to delete family members|catchall}
-CatchAllIntent give feedback {what's the deal with all the downtime|catchall}
-CatchAllIntent give feedback {why can't i add swimming as an activity|catchall}
-CatchAllIntent I want to give feedback {feedback|catchall}
-CatchAllIntent I want to give feedback {submit feedback|catchall}
-CatchAllIntent I want to give feedback {how can we|catchall}
-CatchAllIntent I want to give feedback {how do i|catchall}
-CatchAllIntent I want to give feedback {how can i add|catchall}
-CatchAllIntent I want to give feedback {how can we add|catchall}
-CatchAllIntent I want to give feedback {how do i add|catchall}
-CatchAllIntent I want to give feedback {how can we change assignments|catchall}
-CatchAllIntent I want to give feedback {how do i add family members|catchall}
-CatchAllIntent I want to give feedback {how do i add assignments|catchall}
-CatchAllIntent I want to give feedback {how do i add an assignment|catchall}
-CatchAllIntent I want to give feedback {how do we add|catchall}
-CatchAllIntent I want to give feedback {how do we add people|catchall}
-CatchAllIntent I want to give feedback {what is the wording for adding people|catchall}
-CatchAllIntent I want to give feedback {how can i add a new family member|catchall}
-CatchAllIntent I want to give feedback {add the ability to delete activities|catchall}
-CatchAllIntent I want to give feedback {i would like to make a feature request|catchall}
-CatchAllIntent I want to give feedback {add the ability to delete family members|catchall}
-CatchAllIntent I want to give feedback {add the ability to delete family members|catchall}
-CatchAllIntent I want to give feedback {what's the deal with all the downtime|catchall}
-CatchAllIntent I want to give feedback {why can't i add swimming as an activity|catchall}

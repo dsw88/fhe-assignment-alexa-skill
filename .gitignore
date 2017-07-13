@@ -12,8 +12,6 @@
 !README.md
 !requirements.txt
 !lambda_function.py
-!sam_pre.yml
-!deploy.sh
 !buildspec.yml
 !handel.yml
 !handel-codepipeline.yml

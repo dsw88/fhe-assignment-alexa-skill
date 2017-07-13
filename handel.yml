@@ -1,6 +1,6 @@
 version: 1
 
-name: fhe-alexa-skill
+name: fhe-alexa
 
 environments:
   prd:
@@ -12,7 +12,7 @@ environments:
       memory: 128
       timeout: 10
       tags:
-        app: fhe-alexa-skill
+        app: fhe-alexa
       dependencies:
         - db
         - topic
@@ -24,6 +24,9 @@ environments:
         event_input: '{"rotate": true}'
     topic:
       type: sns
+      subscriptions:
+      - endpoint: info@benchline.org
+        protocol: email
     db:
       type: dynamodb
       partition_key: # Required, NOT updateable

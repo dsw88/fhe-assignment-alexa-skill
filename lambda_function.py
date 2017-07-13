@@ -1,83 +1,44 @@
-# Copyright 2017 Brigham Young University
-# 
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-# 
-# http://www.apache.org/licenses/LICENSE-2.0
-# 
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-from __future__ import print_function
-from ask import alexa
-import boto3
-import traceback
+#!/usr/bin/env python
 import os
 import copy
+import fire
+import boto3
+import traceback
+from ask import alexa
 
 # Initialization
 dynamodb = boto3.resource('dynamodb')
 sns = boto3.client('sns')
-table = dynamodb.Table(os.environ['TABLE_NAME'])
-setup_message = "Since you haven't set up your assignments or family members yet, we'll do that now. Say a member of your family and the assignment they have this week."
+table = dynamodb.Table(os.environ['DYNAMODB_FHE_ALEXA_PRD_DB_TABLE_NAME'])
 
 # Lambda function
 def lambda_handler(request_obj, context=None):
-    if 'rotate' in request_obj:
-        rotate_all_assignments(request_obj)
-    else:
-        if request_obj['session']['application']['applicationId'] != 'amzn1.ask.skill.31864ddd-cc63-4274-bd5c-8f851cca8fc1':
-            raise Exception('Invalid application id')
-        metadata = {}
+    try:
         print(request_obj)
-        # use the metadata in a handler method like so `return alexa.create_response('Hello there {}!'.format(request.metadata['user_name']))`
-        try:
-            return alexa.route_request(request_obj, metadata) 
-        except:
-            message = traceback.format_exc()
-            print(message)
-            sns.publish(Message=message, Subject="Error on FHE Alexa Skill", TopicArn=os.environ["TOPIC_ARN"])
-            return alexa.create_response("There was a problem. Please try again.", end_session=True)
+        if 'rotate' in request_obj:
+            rotate_all_assignments(request_obj)
+        else:
+            if request_obj['session']['application']['applicationId'] != 'amzn1.ask.skill.31864ddd-cc63-4274-bd5c-8f851cca8fc1':
+                raise Exception('Invalid application id')
+            metadata = {}
+            # use the metadata in a handler method like so `return alexa.create_response('Hello there {}!'.format(request.metadata['user_name']))`
+            return alexa.route_request(request_obj, metadata)
+    except:
+        message = traceback.format_exc()
+        print(message)
+        sns.publish(Message=message, Subject="Error on FHE Alexa Skill", TopicArn=os.environ["DYNAMODB_FHE_ALEXA_PRD_DB_TOPIC_ARN"])
+        return alexa.create_response("There was a problem. Please try again.", end_session=True)
 
 # ASK functions
 
 # TODO submit a pull request to the ask library saying we are using the library
 
-@alexa.request_handler("LaunchRequest")
+@alexa.default_handler()
+@alexa.request_handler('LaunchRequest')
+@alexa.intent_handler('AssignmentsIntent')
 def launch_request_handler(request):
     if not is_setup(request.user_id()):
-        request.session['previous_message'] = setup_message
-        return setup_intent_handler_bare(request)
-    return assignments_intent_handler_bare(request)
-
-@alexa.default_handler()
-def default_handler(request):
-    if 'catchall' in request.slots:
-        return catchall_intent_handler(request)
-    return launch_request_handler(request)
-
-@alexa.intent_handler('CatchAllIntent')
-def catchall_intent_handler(request):
-    if not is_setup(request.user_id()):
-        request.session['previous_message'] = setup_message
-        return setup_intent_handler_bare(request)
-    utterance = request.slots['catchall']
-    message = u"The user said, '{}', but I don't know how to handle that.".format(utterance)
-    print(message)
-    sns.publish(Message=message, Subject="User feedback on FHE Alexa Skill", TopicArn=os.environ["TOPIC_ARN"])
-    return alexa.create_response("My apologies.  I don't know how to handle '{}', but I have alerted my maker so in the future I may be able to.".format(utterance), end_session=True)
-
-@alexa.intent_handler('AssignmentsIntent')
-def assignments_intent_handler(request):
-    return assignments_intent_handler_bare(request)
-
-def assignments_intent_handler_bare(request):
-    if not is_setup(request.user_id()):
-        request.session['previous_message'] = setup_message
-        return setup_intent_handler_bare(request)
+        return alexa.create_response("You haven't setup your family members and assignments yet.  If you ready to do that now say setup.", end_session=False)
     try:
         week = 'this'
         if hasattr(request, 'slots'):
@@ -92,147 +53,13 @@ def assignments_intent_handler_bare(request):
         print(traceback.format_exc())
         return alexa.create_response("There was a problem retrieving the assignments.", end_session=True)
 
-@alexa.intent_handler('FamilyMemberAssignmentIntent')
-def family_member_assignment_intent_handler(request):
-    if not is_setup(request.user_id()):
-        request.session['previous_message'] = setup_message
-        return setup_intent_handler_bare(request)
-    family_member = normalize_family_member(request.slots['FamilyMember'])
-    try:
-        wa = get_assignments(request.slots["Week"], request.user_id())
-        family_members = lower_list(wa['family_members'])
-        assignments = lower_list(wa['assignments'])
-        if family_member in family_members:
-            return alexa.create_response("{}'s assignment {} {}".format(family_member, 
-                conjunction_junction(request.slots['Week']), 
-                assignments[family_members.index(family_member)]), end_session=True)
-        else:
-            request.session['yes_next_intent'] = 'setup_intent_handler_bare'
-            return alexa.create_response("{} isn't one of the family members defined. Would you like to run setup again?".format(family_member))
-    except:
-        print(traceback.format_exc())
-        return alexa.create_response("There was a problem retrieving {}'s assignments.".format(family_member), end_session=True)
-
-@alexa.intent_handler('AssignmentFamilyMemberIntent')
-def assignment_family_member_intent_handler(request):
-    if not is_setup(request.user_id()):
-        request.session['previous_message'] = setup_message
-        return setup_intent_handler_bare(request)
-    assignment_to_find = request.slots['Assignment'].lower()
-    week = request.slots['Week']
-    try:
-        wa = get_assignments(week, request.user_id())
-        family_members = lower_list(wa['family_members'])
-        assignments = lower_list(wa['assignments'])
-        if assignment_to_find in assignments:
-            return alexa.create_response("{}'s assignment {} {}".format(family_members[assignments.index(assignment_to_find)],
-                conjunction_junction(week), assignment_to_find), end_session=True)
-        else:
-            request.session['yes_next_intent'] = 'setup_intent_handler_bare'
-            return alexa.create_response("{} isn't one of the assignments defined. Would you like to run setup again?".format(assignment_to_find))
-    except:
-        print(traceback.format_exc())
-        return alexa.create_response("There was a problem retrieving who is assigned to {}.".format(assignment_to_find), end_session=True)
-
 @alexa.intent_handler('AMAZON.HelpIntent')
 def help_intent_handler(request):
-    return alexa.create_response("Hi there, thanks for enabling me.  I can tell you and your family which family members have which assignments for family home evening each week.  And, I'll automatically rotate those assignments each week so you don't have to do that.  To start, just say, 'Alexa, open f.h.e. assignments.'", end_session=True)
+    return alexa.create_response("Hi there! I can tell you and your family which family members have which assignments for family home evening each week. And, I'll automatically rotate those assignments each week so you don't have to do that. To start, just say, 'Alexa, open family home evening assignments.'", end_session=True)
 
 @alexa.intent_handler('AMAZON.CancelIntent')
 @alexa.intent_handler('AMAZON.StopIntent')
 def stop_cancel_intent_handler(request):
-    return alexa.create_response(" ", end_session=True)
-
-# Setup intent handlers
-
-@alexa.intent_handler('SetupIntent')
-def setup_intent_handler(request):
-    return setup_intent_handler_bare(request)
-
-def setup_intent_handler_bare(request):
-    message = " "
-    if is_setup(request.user_id()):
-        message = "You're setup is done. Would you like to redo it?"
-        request.session['yes_next_intent'] = 'delete_setup'
-        return alexa.create_response(message)
-    if 'previous_message' in request.session:
-        message = request.session['previous_message'] + message
-        request.session.pop('previous_message')
-    return alexa.create_response(message)
-
-def delete_setup(request):
-    table.delete_item(Key=request.user_id())
-    return alexa.create_response("Say a member of your family and the assignment they have this week. For example, you could say, 'Joseph has lesson'.")
-
-def setup_intent_handler_done_bare(request):
-    request.session.pop('previous_message')
-    return alexa.create_response("Setup complete.", end_session=True)
-
-@alexa.intent_handler('DeleteAssignmentIntent')
-def delete_assignment_intent(request):
-    if not is_setup(request.user_id()):
-        request.session['previous_message'] = setup_message
-        return setup_intent_handler_bare(request)
-
-    assignment = request.slots['Assignment']
-    item = get_assignments('this', request.user_id())
-    if assignment in item['assignments']:
-        family_member = item['family_members'][item['assignments'].index(assignment)]
-        item['assignments'].remove(assignment)
-        item['family_members'].remove(family_member)
-        table.put_item(Item=item)
-        return alexa.create_response("deleted {} and the family member assigned to it from your configuration.".format(family_member), end_session=True)
-    else:
-        return alexa.create_response("{} isn't an assignment in your configuration.".format(assignment), end_session=True)
-
-@alexa.intent_handler('DeleteFamilyMemberIntent')
-def delete_family_member_intent(request):
-    if not is_setup(request.user_id()):
-        request.session['previous_message'] = setup_message
-        return setup_intent_handler_bare(request)
-
-    family_member = request.slots['FamilyMember']
-    item = get_assignments('this', request.user_id())
-    if family_member in item['family_members']:
-        assignment = item['assignments'][item['family_members'].index(family_member)]
-        item['assignments'].remove(assignment)
-        item['family_members'].remove(family_member)
-        table.put_item(Item=item)
-        return alexa.create_response("deleted {} and their assignment from your configuration.".format(family_member), end_session=True)
-    else:
-        return alexa.create_response("{} isn't a family member in your configuration.".format(family_member), end_session=True)
-
-@alexa.intent_handler('FamilyMemberAssignmentSetupIntent')
-def family_member_assignment_setup_intent_handler(request):
-    family_member = request.slots['FamilyMember']
-    assignment = request.slots['Assignment']
-
-    item = get_assignments('this', request.user_id())
-    if item:
-        item['family_members'].append(family_member)
-        item['assignments'].append(assignment)
-    else:
-        item = {'id': request.user_id(), 'family_members': [family_member], 'assignments': [assignment]}
-    table.put_item(Item=item)
-    request.session['previous_message'] = 'Say the next family member and assignment you want to add.'
-    request.session['yes_next_intent'] = 'setup_intent_handler_bare'
-    request.session['no_next_intent'] = 'setup_intent_handler_done_bare'
-    return alexa.create_response("{} added to {}. Would you like to add another family member and assignment?".format(family_member, assignment), end_session=False)
-
-@alexa.intent_handler('AMAZON.YesIntent')
-def yes_intent_handler(request):
-    if 'yes_next_intent' in request.session:
-        next_intent = request.session['yes_next_intent']
-        request.session.pop('yes_next_intent')
-        return globals()[next_intent](request)
-    return alexa.create_response(" ", end_session=True)
-    
-@alexa.intent_handler('AMAZON.NoIntent')
-def no_intent_handler(request):
-    if 'no_next_intent' in request.session:
-        next_intent = request.session['no_next_intent']
-        request.session.pop('no_next_intent')
-        return globals()[next_intent](request)
     return alexa.create_response(" ", end_session=True)
 
 # Helper functions
@@ -311,18 +138,19 @@ def normalize_family_member(fm):
 def lower_list(l):
     return [item.lower() for item in l]
 
-if __name__ == "__main__":    
-    import argparse
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--serve','-s', action='store_true', default=False)
-    args = parser.parse_args()
-    
-    if args.serve:        
-        print('Serving ASK functionality locally.')
-        import flask
-        server = flask.Flask(__name__)
-        @server.route('/', methods=['POST'])
-        def alexa_skills_kit_requests():
-            request_obj = flask.request.get_json()
-            return lambda_handler(request_obj)
-        server.run()
+def test(verbose=False):
+    import doctest
+    doctest.testmod(verbose=verbose)
+
+def serve():
+    print('Serving ASK functionality locally.')
+    import flask
+    server = flask.Flask(__name__)
+    @server.route('/', methods=['POST'])
+    def alexa_skills_kit_requests():
+        request_obj = flask.request.get_json()
+        return lambda_handler(request_obj)
+    server.run()
+
+if __name__ == "__main__":
+    fire.Fire()

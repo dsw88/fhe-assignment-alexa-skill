@@ -10,89 +10,14 @@
         ]
     },
     {
-        "intent": "FamilyMemberAssignmentIntent",
-        "slots": [
-            {
-               "name": "FamilyMember",
-               "type": "AMAZON.US_FIRST_NAME" 
-            },
-            {
-               "name": "Week",
-               "type": "WEEKS" 
-            }
-        ]
-    },
-    {
-        "intent": "FamilyMemberAssignmentSetupIntent",
-        "slots": [
-            {
-               "name": "FamilyMember",
-               "type": "AMAZON.US_FIRST_NAME" 
-            },
-            {
-               "name": "Assignment",
-               "type": "ASSIGNMENTS"
-            }
-        ]
-    },
-    {
-        "intent": "AssignmentFamilyMemberIntent",
-        "slots": [
-            {
-               "name": "Assignment",
-               "type": "ASSIGNMENTS"
-            },
-            {
-               "name": "Week",
-               "type": "WEEKS"
-            }
-        ]
-    },
-    {
-        "intent": "DeleteFamilyMemberIntent",
-        "slots": [
-            {
-               "name": "FamilyMember",
-               "type": "AMAZON.US_FIRST_NAME"
-            }
-        ]
-    },
-    {
-        "intent": "DeleteAssignmentIntent",
-        "slots": [
-            {
-               "name": "Assignment",
-               "type": "ASSIGNMENTS"
-            }
-        ]
-    },
-    {
         "intent": "AMAZON.YesIntent"
     },
     {
         "intent": "AMAZON.NoIntent"
     },
     {
-        "intent": "AMAZON.StopIntent"
-    },
-    {
-        "intent": "AMAZON.CancelIntent"
-    },
-    {
-        "intent": "AMAZON.HelpIntent"
-    },
-    {
         "intent": "SetupIntent",
         "slots": []
-    },
-    {
-        "intent": "CatchAllIntent",
-        "slots": [
-            {
-               "name": "catchall",
-               "type": "AMAZON.LITERAL"
-            }
-        ]
     }
   ]
 }

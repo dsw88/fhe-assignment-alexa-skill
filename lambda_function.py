@@ -26,7 +26,7 @@ def lambda_handler(request_obj, context=None):
     except:
         message = traceback.format_exc()
         print(message)
-        sns.publish(Message=message, Subject="Error on FHE Alexa Skill", TopicArn=os.environ["SNS_FHE_ALEXA_PRD_DB_TOPIC_ARN"])
+        sns.publish(Message=message, Subject="Error on FHE Alexa Skill", TopicArn=os.environ["SNS_FHE_ALEXA_PRD_TOPIC_TOPIC_ARN"])
         return alexa.create_response("There was a problem. Please try again.", end_session=True)
 
 # ASK functions

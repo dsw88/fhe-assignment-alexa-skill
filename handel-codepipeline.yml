@@ -1,5 +1,7 @@
 version: 1
 
+name: fhe-alexa
+
 pipelines:
   prd:
     phases:

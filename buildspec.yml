@@ -1,12 +1,17 @@
 version: 0.1
 
+env:
+  variables:
+    DYNAMODB_FHE_ALEXA_PRD_DB_TABLE_NAME: "value"
+    SNS_FHE_ALEXA_PRD_TOPIC_TOPIC_ARN: "value"
+
 phases:
   install:
     commands:
       - pip install -r requirements.txt -t .
   pre_build:
     commands:
-      - #python lambda_function.py test --verbose True
+      - python lambda_function.py test --verbose True
   build:
     commands:
       - echo "Nothing to run in the build phase..."

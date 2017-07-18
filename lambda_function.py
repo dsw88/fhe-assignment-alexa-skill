@@ -161,7 +161,7 @@ def help_intent_handler(request):
 
 def test(verbose=False):
     import doctest
-    doctest.testmod(verbose=verbose)
+    return doctest.testmod(verbose=verbose)[0]
 
 if __name__ == "__main__":
     fire.Fire()

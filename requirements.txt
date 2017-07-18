@@ -1,5 +1,5 @@
 fire
 boto3
-ask-alexa-pykit
 flask
 requests
+echokit

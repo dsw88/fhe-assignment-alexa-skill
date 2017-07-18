@@ -1,19 +1,4 @@
-# Ignore everything
-*
-# But descend into directories
-#!*/
-# Recursively allow files under subtree
-#!/subtree/**
-!/developer.amazon.com/**
-# You can be specific with these rules
-#!/some/other/deep/path/**
-!.gitignore
-!LICENSE
-!README.md
-!requirements.txt
-!lambda_function.py
-!buildspec.yml
-!handel.yml
-!handel-codepipeline.yml
-!test/test.py
-!test/test.json
+*.pyc
+*.csv
+venv/
+pauldeden.yml

@@ -1,28 +1,20 @@
 {
   "session": {
-    "sessionId": "SessionId.906e46d2-2519-4608-a1ac-7496c15a22f9",
+    "sessionId": "SessionId.d4b0f8b6-aa74-4cc2-8d35-a332f77966a9",
     "application": {
       "applicationId": "amzn1.ask.skill.31864ddd-cc63-4274-bd5c-8f851cca8fc1"
     },
     "attributes": {},
     "user": {
-      "userId": "amzn1.ask.account.AEH7URKSP42LLMDB3FFJ3RWRTL5NKVKFKOSVBYECJIXNRGUBJAJ2HQUU3VZDKX4DTFXQIDHKOOI736XI3ZICEQQCBGTSSO2A37ZOF3H2JVCWM2YR4UNBNWCPH6TS3OHGPJOQ3ARD5OWBFXA75YCXFFAP4QCUIKNLVACPNSMW4L5PIOGKR6RWAGEPU42UDILYV5FCHUAVI4V6HDQ"
+      "userId": "amzn1.ask.account.AFKU4VNZJSICONEF3T5UHXBWUWY74TZ5LDNDIYRBS4AIRSGIBMPUY6MPDNLHWA7EJSCGTIQHFIEYLMZ4WTDU47QVK3FVEZL53B25J5G3YSYOOMSBB7BLMFEXNEM5JB3LS2VLZFWHHTQS4WHVIIHIHL3P7S33E4UG3UXH7NIS6OAXNQZOQPCJIJ2DKLW6IFQAXMN62GD3K5IUG3Q"
     },
     "new": true
   },
   "request": {
-    "type": "IntentRequest",
-    "requestId": "EdwRequestId.d9c929cf-3d78-485d-aa77-382afe9335a6",
+    "type": "LaunchRequest",
+    "requestId": "EdwRequestId.8a29ad72-8739-492c-b409-9ea39b812f69",
     "locale": "en-US",
-    "timestamp": "2017-02-15T13:39:40Z",
-    "intent": {
-      "name": "AssignmentsIntent",
-      "slots": {
-        "AWeek": {
-          "name": "AWeek"
-        }
-      }
-    }
+    "timestamp": "2017-07-17T03:28:18Z"
   },
   "version": "1.0"
 }

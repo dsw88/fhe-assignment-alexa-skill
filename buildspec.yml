@@ -3,7 +3,6 @@ version: 0.2
 env:
   variables:
     DYNAMODB_FHE_ALEXA_PRD_DB_TABLE_NAME: "value"
-    SNS_FHE_ALEXA_PRD_TOPIC_TOPIC_ARN: "value"
 
 phases:
   install:
@@ -12,12 +11,6 @@ phases:
   pre_build:
     commands:
       - python lambda_function.py test --verbose True
-  build:
-    commands:
-      - echo "Nothing to run in the build phase..."
-  post_build:
-    commands:
-      - echo "Nothing to run in the post_build phase..."
 artifacts:
   files:
     - '**/*'

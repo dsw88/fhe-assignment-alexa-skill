@@ -1,5 +1,9 @@
 version: 0.2
 
+env:
+  variables:
+    DYNAMODB_FHE_ALEXA_PRD_DB_TABLE_NAME: "fhe-alexa-prd-db-dynamodb"
+
 phases:
   install:
     commands:

@@ -2,4 +2,3 @@ fire
 boto3
 flask
 requests
-echokit

@@ -28,6 +28,7 @@ def handler(event, context):
           f"Mem limits(MB): {context.memory_limit_in_mb}\n"
           f"Event received: {event}")
     ask_request = echokit._ASKObject(**event)
+    print(f"ask_request: {ask_request}")
     if (echokit.verify_application_id and
             ask_request.session.application.applicationId != echokit.application_id):
         raise ValueError(f"App ID expected: '{echokit.application_id}' "

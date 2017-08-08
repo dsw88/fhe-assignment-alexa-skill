@@ -13,7 +13,31 @@ table = dynamodb.Table(os.environ['DYNAMODB_FHE_ALEXA_PRD_DB_TABLE_NAME'])
 
 echokit.application_id = 'amzn1.ask.skill.31864ddd-cc63-4274-bd5c-8f851cca8fc1'
 
-lambda_handler = echokit.handler
+def handler(event, context):
+    """Lambda service calls this method when sending us a request
+
+    :param event: Contains data on the Alexa request, used to
+        create ``echokit.request.RequestWrapper``
+    :param context: RequestWrapper context, used primarily for logging.
+        **Note**: *Not* the same as ``echokit.request.Context``
+    :return: Dict of ``echokit.response.ResponseWrapper`` object
+    """
+    print(f"Log stream: {context.log_stream_name}\n"
+          f"Log group: {context.log_group_name}\n"
+          f"Request ID: {context.aws_request_id}\n"
+          f"Mem limits(MB): {context.memory_limit_in_mb}\n"
+          f"Event received: {event}")
+    ask_request = echokit._ASKObject(**event)
+    if (echokit.verify_application_id and
+            ask_request.session.application.applicationId != echokit.application_id):
+        raise ValueError(f"App ID expected: '{echokit.application_id}' "
+                         f"App ID received: '{ask_request.session.application.applicationId}'")
+    handler_func = echokit.handlers.__get_handler(ask_request.request)
+    response = handler_func(ask_request)
+    # Won't always receive responses (ex: SessionEndedRequest)
+    if response:
+        response_dict = response._dict()
+        return response_dict
 
 # Helper functions
 def conjunction_junction(week, individual=True):
@@ -138,11 +162,11 @@ def lower_list(l):
 
 # TODO submit a pull request to the ask library saying we are using the library
 
-@echokit.on_session_launch
+@echokit.on_intent('LaunchRequest')
 @echokit.on_intent('AssignmentsIntent')
 @echokit.slot('Week', dest='week')
 def launch_request_handler(request, week='this'):
-    if not is_setup(request.user_id()):
+    if not is_setup(request.session.user.userId):
         return echokit.ask("You haven't setup your family members and assignments yet.  If you ready to do that now, just say setup.")
     try:
         assignments = get_assignments(week, request.user_id())

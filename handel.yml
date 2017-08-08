@@ -16,6 +16,10 @@ environments:
       dependencies:
         - db
         - topic
+    alexaskill:
+      type: alexaskillkit
+      event_consumers:
+      - service_name: function
     schedule:
       type: cloudwatchevent
       schedule: 'cron(0 7 ? * TUE *)'

@@ -253,6 +253,8 @@ def get_slot(request, slot_name):
     ''
     >>> get_slot({'request': {'type': 'IntentRequest', 'dialogState': 'COMPLETED', 'intent': {'name': 'AIntent', 'confirmationStatus': 'NONE', 'slots': {'ZodiacSign': {'name': 'ZodiacSign', 'value': 'virgo', 'confirmationStatus': 'NONE'}}}}}, 'zodiacsign')
     'virgo'
+    >>> get_slot({'request': {'type': 'IntentRequest', 'dialogState': 'COMPLETED', 'intent': {'name': 'AIntent', 'confirmationStatus': 'NONE', 'slots': {'ZodiacSign': {'name': 'ZodiacSign', 'value': 'virgo', 'confirmationStatus': 'NONE'}}}}}, 'ZodiacSign')
+    'virgo'
     >>> get_slot({'request': {'type': 'IntentRequest', 'dialogState': 'COMPLETED', 'intent': {'name': 'AIntent', 'confirmationStatus': 'NONE', 'slots': {'ZodiacSign': {'name': 'ZodiacSign', 'confirmationStatus': 'NONE'}}}}}, 'zodiacsign')
     ''
     >>> get_slot({'request':{'type':'LaunchRequest'}}, 'zodiacsign')

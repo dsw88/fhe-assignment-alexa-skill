@@ -261,7 +261,8 @@ def get_slot(request, slot_name):
     if not 'intent' in request['request']:
         return ''
     if 'slots' in request['request']['intent']:
-        if slot_name.lower() in [key.lower() for key in request['request']['intent']['slots']]:
+        slot_name = slot_name.lower()
+        if slot_name in [key.lower() for key in request['request']['intent']['slots']]:
             slots = {k.lower():v for k,v in request['request']['intent']['slots'].items()}
             if 'value' in slots[slot_name]:
                 return slots[slot_name]['value']

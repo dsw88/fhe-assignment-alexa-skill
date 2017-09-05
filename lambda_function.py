@@ -113,11 +113,11 @@ def handler(event, context):
             week = 'this'
         return launch_request_handler(event, week)
     if request_type == 'IntentRequest':
-        if event['request']['name'] == 'AMAZON.HelpIntent':
+        if event['request']['intent']['name'] == 'AMAZON.HelpIntent':
             return help_intent_handler(event)
-        if event['request']['name'] in ['AMAZON.CancelIntent', 'AMAZON.StopIntent']:
+        if event['request']['intent']['name'] in ['AMAZON.CancelIntent', 'AMAZON.StopIntent']:
             return respond('Cancelling')
-        if event['request']['name'] == 'SetupIntent':
+        if event['request']['intent']['name'] == 'SetupIntent':
             return setup_intent_handler(event)
 
 # Helper functions

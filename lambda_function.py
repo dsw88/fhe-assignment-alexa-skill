@@ -107,7 +107,7 @@ def handler(event, context):
     if event['session']['application']['applicationId'] != app_id:
         raise Exception('Invalid app id')
     request_type = event['request']['type']
-    if request_type == 'LaunchRequest' or request_type == 'IntentRequest' and event['request']['name'] == 'AssignmentsIntent':
+    if request_type == 'LaunchRequest' or request_type == 'IntentRequest' and event['request']['intent']['name'] == 'AssignmentsIntent':
         week = get_slot(event, 'week')
         if not week:
             week = 'this'

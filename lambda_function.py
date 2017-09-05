@@ -270,7 +270,7 @@ def get_user_id(request):
 def launch_request_handler(request, week='this'):
     userId = get_user_id(request)
     if not is_setup(userId):
-        return respond("You haven't setup your family members and assignments yet.  If you ready to do that now, just say, 'setup'.")
+        return respond("You haven't setup your family members and assignments yet.  If you ready to do that now, just say, 'setup'.", shouldEndSession=False)
     try:
         assignments = get_assignments(week, userId)
         response = "The assignments {}: ".format(conjunction_junction(week, individual=False))

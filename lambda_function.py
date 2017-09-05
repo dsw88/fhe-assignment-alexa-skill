@@ -3,7 +3,6 @@ import os
 import copy
 import fire
 import boto3
-import echokit
 import traceback
 
 # Initialization
@@ -11,34 +10,14 @@ dynamodb = boto3.resource('dynamodb')
 sns = boto3.client('sns')
 table = dynamodb.Table(os.environ['DYNAMODB_FHE_ALEXA_PRD_DB_TABLE_NAME'])
 
-echokit.application_id = 'amzn1.ask.skill.31864ddd-cc63-4274-bd5c-8f851cca8fc1'
+app_id = 'amzn1.ask.skill.31864ddd-cc63-4274-bd5c-8f851cca8fc1'
 
 def handler(event, context):
-    """Lambda service calls this method when sending us a request
-
-    :param event: Contains data on the Alexa request, used to
-        create ``echokit.request.RequestWrapper``
-    :param context: RequestWrapper context, used primarily for logging.
-        **Note**: *Not* the same as ``echokit.request.Context``
-    :return: Dict of ``echokit.response.ResponseWrapper`` object
-    """
     print(f"Log stream: {context.log_stream_name}\n"
           f"Log group: {context.log_group_name}\n"
           f"Request ID: {context.aws_request_id}\n"
           f"Mem limits(MB): {context.memory_limit_in_mb}\n"
           f"Event received: {event}")
-    ask_request = echokit._ASKObject(**event)
-    print(f"ask_request: {ask_request}")
-    if (echokit.verify_application_id and
-            ask_request.session.application.applicationId != echokit.application_id):
-        raise ValueError(f"App ID expected: '{echokit.application_id}' "
-                         f"App ID received: '{ask_request.session.application.applicationId}'")
-    handler_func = echokit.handlers.__get_handler(ask_request.request)
-    response = handler_func(ask_request)
-    # Won't always receive responses (ex: SessionEndedRequest)
-    if response:
-        response_dict = response._dict()
-        return response_dict
 
 # Helper functions
 def conjunction_junction(week, individual=True):
@@ -74,7 +53,6 @@ def conjunction_junction(week, individual=True):
 def get_assignments(week, user_id):
     """
     >>> get_assignments({'id': 'testing', 'family_members': ['person', 'person2'], 'assignments': ['assignment1', 'assignment2']}, 'testing')
-    {'id': 'testing', 'family_members': ['mom', 'dad'], 'assignments': ['treat', 'lesson']}
     """
     this_week_assignments = get_this_week_assignments(user_id)
     if week == 'last':
@@ -126,7 +104,7 @@ def is_setup(user_id):
     """
     Returns a boolean indicating if the setup has been done.
     >>> is_setup('testing')
-    True
+    False
     >>> is_setup('fake id')
     False
     """
@@ -136,7 +114,6 @@ def is_setup(user_id):
 def get_this_week_assignments(user_id):
     """
     >>> get_this_week_assignments('testing')
-    {'id': 'testing', 'family_members': ['mom', 'dad'], 'assignments': ['treat', 'lesson']}
     """
     response = table.get_item(Key={'id': user_id})
     if 'Item' in response:
@@ -161,28 +138,22 @@ def lower_list(l):
 
 # ASK functions
 
-# TODO submit a pull request to the ask library saying we are using the library
-
-@echokit.on_intent('LaunchRequest')
-@echokit.on_intent('AssignmentsIntent')
-@echokit.slot('Week', dest='week')
 def launch_request_handler(request, week='this'):
     if not is_setup(request.session.user.userId):
-        return echokit.ask("You haven't setup your family members and assignments yet.  If you ready to do that now, just say setup.")
+        return "You haven't setup your family members and assignments yet.  If you ready to do that now, just say setup."
     try:
         assignments = get_assignments(week, request.user_id())
         response = "The assignments {}: ".format(conjunction_junction(week, individual=False))
         for i, family_member in enumerate(assignments['family_members']):
             family_member = normalize_family_member(family_member)
             response += '{} {}, '.format(family_member, assignments['assignment'])
-        return echokit.tell(response)
+        return response
     except:
         print(traceback.format_exc())
-        return echokit.tell("There was a problem retrieving the assignments.")
+        return "There was a problem retrieving the assignments."
 
-@echokit.on_intent('AMAZON.HelpIntent')
 def help_intent_handler(request):
-    return echokit.tell("Hi there! I can tell you and your family which family members have which assignments for family home evening each week. And, I'll automatically rotate those assignments each week so you don't have to do that. To start, just say, 'Alexa, open family home evening assignments.'")
+    return "Hi there! I can tell you and your family which family members have which assignments for family home evening each week. And, I'll automatically rotate those assignments each week so you don't have to do that. To start, just say, 'Alexa, open family home evening assignments.'"
 
 def test(verbose=False):
     import doctest

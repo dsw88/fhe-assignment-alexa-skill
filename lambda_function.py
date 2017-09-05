@@ -243,6 +243,8 @@ def get_slot(request, slot_name):
     ''
     >>> get_slot({'request': {'type': 'IntentRequest', 'dialogState': 'COMPLETED', 'intent': {'name': 'AIntent', 'confirmationStatus': 'NONE', 'slots': {'ZodiacSign': {'name': 'ZodiacSign', 'value': 'virgo', 'confirmationStatus': 'NONE'}}}}}, 'zodiacsign')
     'virgo'
+    >>> get_slot({'request': {'type': 'IntentRequest', 'dialogState': 'COMPLETED', 'intent': {'name': 'AIntent', 'confirmationStatus': 'NONE', 'slots': {'ZodiacSign': {'name': 'ZodiacSign', 'confirmationStatus': 'NONE'}}}}}, 'zodiacsign')
+    ''
     >>> get_slot({'request':{'type':'LaunchRequest'}}, 'zodiacsign')
     ''
     """
@@ -251,7 +253,8 @@ def get_slot(request, slot_name):
     if 'slots' in request['request']['intent']:
         if slot_name.lower() in [key.lower() for key in request['request']['intent']['slots']]:
             slots = {k.lower():v for k,v in request['request']['intent']['slots'].items()}
-            return slots[slot_name]['value']
+            if 'value' in slots[slot_name]:
+                return slots[slot_name]['value']
     return ''
 
 def get_user_id(request):

@@ -96,12 +96,22 @@ def handler(event, context):
    },
    'version':'1.0'
     }
+
+    >>> handler({'session': {'application': {'applicationId': '1223'}}}, {})
+    Traceback (most recent call last):
+    ...
+    Exception: Invalid app id
+    >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'LaunchRequest'}}, {})
+    {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': "You haven't setup your family members and assignments yet.  If you ready to do that now, just say, 'setup'."}, 'shouldEndSession': False}}
+    >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'AssignmentsIntent'}}}, {})
+    {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': "You haven't setup your family members and assignments yet.  If you ready to do that now, just say, 'setup'."}, 'shouldEndSession': False}}
+    >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'AMAZON.HelpIntent'}}}, {})
+    {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': "Hi there! I can tell you and your family which family members have which assignments for family home evening each week. And, I'll automatically rotate those assignments each week so you don't have to do that. To start, just say, 'Alexa, open family home evening assignments.'"}, 'shouldEndSession': True}}
+    >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'AMAZON.CancelIntent'}}}, {})
+    {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': 'Cancelling'}, 'shouldEndSession': True}}
+    >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'AMAZON.StopIntent'}}}, {})
+    {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': 'Cancelling'}, 'shouldEndSession': True}}
     """
-    print(f"Log stream: {context.log_stream_name}\n"
-          f"Log group: {context.log_group_name}\n"
-          f"Request ID: {context.aws_request_id}\n"
-          f"Mem limits(MB): {context.memory_limit_in_mb}\n"
-          f"Event received: {event}")
     if "rotate" in event:
         rotate_all_assignments(event)
     if event['session']['application']['applicationId'] != app_id:

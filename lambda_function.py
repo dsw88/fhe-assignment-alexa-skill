@@ -112,7 +112,7 @@ def handler(event, context):
         if not week:
             week = 'this'
         return launch_request_handler(event, week)
-    if request_type == 'LaunchRequest':
+    if request_type == 'IntentRequest':
         if event['request']['name'] == 'AMAZON.HelpIntent':
             return help_intent_handler(event)
         if event['request']['name'] in ['AMAZON.CancelIntent', 'AMAZON.StopIntent']:

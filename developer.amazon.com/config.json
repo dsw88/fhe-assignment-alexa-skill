@@ -1,0 +1,435 @@
+{
+  "intents": [
+    {
+      "name": "AMAZON.CancelIntent",
+      "samples": []
+    },
+    {
+      "name": "AMAZON.HelpIntent",
+      "samples": []
+    },
+    {
+      "name": "AMAZON.StopIntent",
+      "samples": []
+    },
+    {
+      "name": "AssignmentsIntent",
+      "samples": [
+        "the assignments",
+        "who has what",
+        "to give me the assignments",
+        "to give us the assignments",
+        "{Week} week's assignments",
+        "to give me {Week} week's assignments",
+        "to give us {Week} week's assignments"
+      ],
+      "slots": [
+        {
+          "name": "Week",
+          "type": "WEEKS",
+          "samples": []
+        }
+      ]
+    },
+    {
+      "name": "SetupIntent",
+      "samples": [
+        "setup",
+        "setup config",
+        "setup configuration",
+        "config",
+        "configuration",
+        "do setup",
+        "run setup",
+        "do the setup",
+        "run the setup",
+        "setup assignments",
+        "setup family members",
+        "setup people",
+        "setup assignments and family members",
+        "setup assignments and people",
+        "setup people and assignments",
+        "setup family members and assignments"
+      ],
+      "slots": [
+        {
+          "name": "familyMember",
+          "type": "AMAZON.US_FIRST_NAME",
+          "samples": [
+            "{familyMember} added"
+          ]
+        },
+        {
+          "name": "assignment",
+          "type": "ASSIGNMENTS",
+          "samples": [
+            "{familyMember} is assigned to {assignment} ",
+            "{familyMember} has {assignment} ",
+            "{familyMember} has the {assignment} "
+          ]
+        }
+      ]
+    }
+  ],
+  "types": [
+    {
+      "name": "AMAZON.US_FIRST_NAME",
+      "values": [
+        {
+          "id": null,
+          "name": {
+            "value": "dad",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "daddy",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "father",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "papa",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "pap",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "mom",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "mum",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "momma",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "mother",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "mommy",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "gran",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "grandma",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "granny",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "grandmom",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "grandmother",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "grandmommy",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "grandpa",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "grandfather",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "grandpappy",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "granddad",
+            "synonyms": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "ASSIGNMENTS",
+      "values": [
+        {
+          "id": null,
+          "name": {
+            "value": "treat",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "lesson",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "scripture",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "song",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "activity",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "conducting",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "prayer",
+            "synonyms": []
+          }
+        }
+      ]
+    },
+    {
+      "name": "WEEKS",
+      "values": [
+        {
+          "id": null,
+          "name": {
+            "value": "last",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "this",
+            "synonyms": []
+          }
+        },
+        {
+          "id": null,
+          "name": {
+            "value": "next",
+            "synonyms": []
+          }
+        }
+      ]
+    }
+  ],
+  "prompts": [
+    {
+      "id": "Elicit.Intent-SetupIntent.IntentSlot-familyMember",
+      "promptVersion": "1.0",
+      "definitionVersion": "1.0",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Which family member?"
+        },
+        {
+          "type": "PlainText",
+          "value": "Who will do this assignment next?"
+        },
+        {
+          "type": "PlainText",
+          "value": "Who?"
+        },
+        {
+          "type": "PlainText",
+          "value": "Who will do {assignment}?"
+        },
+        {
+          "type": "PlainText",
+          "value": "How has {assignment}?"
+        },
+        {
+          "type": "PlainText",
+          "value": "Who is assigned to {assignment}?"
+        }
+      ]
+    },
+    {
+      "id": "Confirm.Intent-SetupIntent.IntentSlot-familyMember",
+      "promptVersion": "1.0",
+      "definitionVersion": "1.0",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "{familyMember} right?"
+        },
+        {
+          "type": "PlainText",
+          "value": "Is that {familyMember}?"
+        },
+        {
+          "type": "PlainText",
+          "value": "You said, {familyMember}, correct?"
+        },
+        {
+          "type": "PlainText",
+          "value": "I heard {familyMember}.  Is that right?"
+        }
+      ]
+    },
+    {
+      "id": "Elicit.Intent-SetupIntent.IntentSlot-assignment",
+      "promptVersion": "1.0",
+      "definitionVersion": "1.0",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "What is the assignment?"
+        },
+        {
+          "type": "PlainText",
+          "value": "What will {familyMember} do?"
+        },
+        {
+          "type": "PlainText",
+          "value": "What is {familyMember}'s assignment?"
+        }
+      ]
+    },
+    {
+      "id": "Confirm.Intent-SetupIntent.IntentSlot-assignment",
+      "promptVersion": "1.0",
+      "definitionVersion": "1.0",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "I heard {assignment}.  Is that correct?"
+        },
+        {
+          "type": "PlainText",
+          "value": "{assignment} right?"
+        },
+        {
+          "type": "PlainText",
+          "value": "I heard {assignment}.  Is that right?"
+        },
+        {
+          "type": "PlainText",
+          "value": "You mean {assignment}, correct?"
+        },
+        {
+          "type": "PlainText",
+          "value": "Did I heard you say {assignment}?"
+        }
+      ]
+    }
+  ],
+  "dialog": {
+    "version": "1.0",
+    "intents": [
+      {
+        "name": "SetupIntent",
+        "confirmationRequired": false,
+        "prompts": {},
+        "slots": [
+          {
+            "name": "familyMember",
+            "type": "AMAZON.US_FIRST_NAME",
+            "elicitationRequired": true,
+            "confirmationRequired": true,
+            "prompts": {
+              "elicit": "Elicit.Intent-SetupIntent.IntentSlot-familyMember",
+              "confirm": "Confirm.Intent-SetupIntent.IntentSlot-familyMember"
+            }
+          },
+          {
+            "name": "assignment",
+            "type": "ASSIGNMENTS",
+            "elicitationRequired": true,
+            "confirmationRequired": true,
+            "prompts": {
+              "elicit": "Elicit.Intent-SetupIntent.IntentSlot-assignment",
+              "confirm": "Confirm.Intent-SetupIntent.IntentSlot-assignment"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

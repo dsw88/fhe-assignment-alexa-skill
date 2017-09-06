@@ -56,16 +56,16 @@
           "name": "familyMember",
           "type": "AMAZON.US_FIRST_NAME",
           "samples": [
-            "{familyMember} added"
+            "{familyMember}",
+            "the family member is {familyMember}"
           ]
         },
         {
           "name": "assignment",
           "type": "ASSIGNMENTS",
           "samples": [
-            "{familyMember} is assigned to {assignment} ",
-            "{familyMember} has {assignment} ",
-            "{familyMember} has the {assignment} "
+            "{assignment}",
+            "the assignment is {assignment}"
           ]
         }
       ]
@@ -315,18 +315,6 @@
         {
           "type": "PlainText",
           "value": "Who?"
-        },
-        {
-          "type": "PlainText",
-          "value": "Who will do {assignment}?"
-        },
-        {
-          "type": "PlainText",
-          "value": "How has {assignment}?"
-        },
-        {
-          "type": "PlainText",
-          "value": "Who is assigned to {assignment}?"
         }
       ]
     },
@@ -364,11 +352,7 @@
         },
         {
           "type": "PlainText",
-          "value": "What will {familyMember} do?"
-        },
-        {
-          "type": "PlainText",
-          "value": "What is {familyMember}'s assignment?"
+          "value": "Which assignment?"
         }
       ]
     },

@@ -10,7 +10,11 @@
     },
     {
       "name": "AMAZON.StopIntent",
-      "samples": []
+      "samples": [
+        "all done",
+        "let's end this",
+        "time to end"
+      ]
     },
     {
       "name": "AssignmentsIntent",
@@ -19,17 +23,30 @@
         "who has what",
         "to give me the assignments",
         "to give us the assignments",
-        "{Week} week's assignments",
-        "to give me {Week} week's assignments",
-        "to give us {Week} week's assignments"
+        "the week's assignments",
+        "to give me this week's assignments",
+        "to give us this week's assignments"
       ],
-      "slots": [
-        {
-          "name": "Week",
-          "type": "WEEKS",
-          "samples": []
-        }
-      ]
+      "slots": []
+    },
+    {
+      "name": "ClearIntent",
+      "samples": [
+        "clear",
+        "reset",
+        "clear the setup",
+        "clear the config",
+        "clear the configuration",
+        "empty the assignments",
+        "reset the assignment",
+        "reset the family member",
+        "reset the setup",
+        "empty the config",
+        "empty the setup",
+        "start over",
+        "clean slate"
+      ],
+      "slots": []
     },
     {
       "name": "SetupIntent",
@@ -49,7 +66,13 @@
         "setup assignments and family members",
         "setup assignments and people",
         "setup people and assignments",
-        "setup family members and assignments"
+        "setup family members and assignments",
+        "add an assignment",
+        "add a family member",
+        "add a new assignment",
+        "add a new family member",
+        "add a new person",
+        "add a person"
       ],
       "slots": [
         {
@@ -57,7 +80,13 @@
           "type": "AMAZON.US_FIRST_NAME",
           "samples": [
             "{familyMember}",
-            "the family member is {familyMember}"
+            "the family member is {familyMember}",
+            "let's go with {familyMember}",
+            "how about {familyMember}",
+            "definitely {familyMember}",
+            "it will be {familyMember}",
+            "it is {familyMember}",
+            "it's {familyMember}"
           ]
         },
         {
@@ -65,7 +94,11 @@
           "type": "ASSIGNMENTS",
           "samples": [
             "{assignment}",
-            "the assignment is {assignment}"
+            "the assignment is {assignment}",
+            "it is {assignment}",
+            "it's {assignment}",
+            "let's go with {assignment}",
+            "how about {assignment}"
           ]
         }
       ]
@@ -300,6 +333,48 @@
   ],
   "prompts": [
     {
+      "id": "Confirm.Intent-ClearIntent",
+      "promptVersion": "1.0",
+      "definitionVersion": "1.0",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Want me to remove all of the family members and assignments from this skill's configuration?"
+        },
+        {
+          "type": "PlainText",
+          "value": "Want me to reset the setup?"
+        },
+        {
+          "type": "PlainText",
+          "value": "Want me to clear the config?"
+        },
+        {
+          "type": "PlainText",
+          "value": "Remove the setup?"
+        },
+        {
+          "type": "PlainText",
+          "value": "Clear the assignments?"
+        }
+      ]
+    },
+    {
+      "id": "Confirm.Intent-SetupIntent",
+      "promptVersion": "1.0",
+      "definitionVersion": "1.0",
+      "variations": [
+        {
+          "type": "PlainText",
+          "value": "Ready to setup {familyMember} on {assignment}?"
+        },
+        {
+          "type": "PlainText",
+          "value": "I'll setup {familyMember} with {assignment} this week.  OK?"
+        }
+      ]
+    },
+    {
       "id": "Elicit.Intent-SetupIntent.IntentSlot-familyMember",
       "promptVersion": "1.0",
       "definitionVersion": "1.0",
@@ -315,6 +390,22 @@
         {
           "type": "PlainText",
           "value": "Who?"
+        },
+        {
+          "type": "PlainText",
+          "value": "Who has this assignment?"
+        },
+        {
+          "type": "PlainText",
+          "value": "Who can I add for you?"
+        },
+        {
+          "type": "PlainText",
+          "value": "Who shall I add for you?"
+        },
+        {
+          "type": "PlainText",
+          "value": "Which person?"
         }
       ]
     },
@@ -353,6 +444,14 @@
         {
           "type": "PlainText",
           "value": "Which assignment?"
+        },
+        {
+          "type": "PlainText",
+          "value": "What will this person do?"
+        },
+        {
+          "type": "PlainText",
+          "value": "What will they do this week?"
         }
       ]
     },
@@ -388,9 +487,19 @@
     "version": "1.0",
     "intents": [
       {
+        "name": "ClearIntent",
+        "confirmationRequired": true,
+        "prompts": {
+          "confirm": "Confirm.Intent-ClearIntent"
+        },
+        "slots": []
+      },
+      {
         "name": "SetupIntent",
-        "confirmationRequired": false,
-        "prompts": {},
+        "confirmationRequired": true,
+        "prompts": {
+          "confirm": "Confirm.Intent-SetupIntent"
+        },
         "slots": [
           {
             "name": "familyMember",

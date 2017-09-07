@@ -11,6 +11,11 @@ sns = boto3.client('sns')
 table = dynamodb.Table(os.environ['DYNAMODB_FHE_ALEXA_PRD_DB_TABLE_NAME'])
 
 app_id = 'amzn1.ask.skill.31864ddd-cc63-4274-bd5c-8f851cca8fc1'
+testing=False
+
+def log(text):
+    if not testing:
+        print(text)
 
 def respond(responseText, shouldEndSession=True, sessionAttributes={}, cardTitle="", cardContent="", repromptText=""):
     response = {
@@ -37,6 +42,7 @@ def respond(responseText, shouldEndSession=True, sessionAttributes={}, cardTitle
             "text": repromptText
           }
         }
+    log(f"returning response: {response}")
     return response
 
 def handler(event, context):
@@ -111,6 +117,14 @@ def handler(event, context):
     {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': 'Cancelling'}, 'shouldEndSession': True}}
     >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'AMAZON.StopIntent'}}}, {})
     {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': 'Cancelling'}, 'shouldEndSession': True}}
+    >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'SetupIntent', 'confirmationStatus': 'NONE'}, 'dialogState': 'STARTED'}}, {})
+    {'version': '1.0', 'sessionAttributes': {}, 'response': {'shouldEndSession': False, 'directives': [{'type': 'Dialog.Delegate'}]}}
+    >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'SetupIntent', 'confirmationStatus': 'DENIED'}, 'dialogState': 'COMPLETED'}}, {})
+    {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': 'OK, not proceeding.'}, 'shouldEndSession': True}}
+    >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'SetupIntent', 'confirmationStatus': 'CONFIRMED'}, 'dialogState': 'COMPLETED'}}, {})
+    Traceback (most recent call last):
+    ...
+    botocore.exceptions.ClientError: An error occurred (ValidationException) when calling the PutItem operation: One or more parameter values were invalid: An AttributeValue may not contain an empty string
     """
     if "rotate" in event:
         rotate_all_assignments(event)
@@ -129,6 +143,40 @@ def handler(event, context):
             return respond('Cancelling')
         if event['request']['intent']['name'] == 'SetupIntent':
             return setup_intent_handler(event)
+
+def dialog(dialogType, promptText="", updatedIntent={}):
+    """
+    >>> dialog('Delegate')
+    {'version': '1.0', 'sessionAttributes': {}, 'response': {'shouldEndSession': False, 'directives': [{'type': 'Dialog.Delegate'}]}}
+    >>> dialog('delegate')
+    Traceback (most recent call last):
+    ...
+    AssertionError
+    >>> dialog('ConfirmSlot', 'testing', {'hi': 'there'})
+    {'version': '1.0', 'sessionAttributes': {}, 'response': {'shouldEndSession': False, 'directives': [{'type': 'Dialog.ConfirmSlot', 'updatedIntent': {'hi': 'there'}}]}, 'outputSpeech': {'type': 'PlainText', 'text': 'testing'}}
+    """
+    assert dialogType in ['Delegate', 'ElicitSlot', 'ConfirmSlot', 'ConfirmIntent']
+    dialogResponse = {
+      "version": "1.0",
+      "sessionAttributes": {},
+      "response": {
+        "shouldEndSession": False,
+        "directives": [
+          {
+            "type": f"Dialog.{dialogType}"
+          }
+        ]
+      }
+    }
+    if promptText:
+        dialogResponse['outputSpeech'] = {
+          "type": "PlainText",
+          "text": promptText
+        }
+    if updatedIntent:
+        dialogResponse['response']['directives'][0]['updatedIntent'] = updatedIntent
+    log(f"returning dialog: {dialogResponse}")
+    return dialogResponse
 
 # Helper functions
 def conjunction_junction(week, individual=True):
@@ -183,7 +231,7 @@ def rotate_all_assignments(request):
         nwa = next_week_assignments(household_assignments)
         table.put_item(Item=nwa)
         count += 1
-    print("Rotated {} users' assignments".format(count))
+    log("Rotated {} users' assignments".format(count))
 
 def shift(num_to_shift, array):
     """
@@ -299,21 +347,30 @@ def help_intent_handler(request):
     return respond("Hi there! I can tell you and your family which family members have which assignments for family home evening each week. And, I'll automatically rotate those assignments each week so you don't have to do that. To start, just say, 'Alexa, open family home evening assignments.'")
 
 def setup_intent_handler(request):
-    print(request)
+    log(request)
+    while request['request']['dialogState'] != 'COMPLETED':
+        return dialog('Delegate')
+
     family_member = get_slot(request, 'FamilyMember')
     assignment = get_slot(request, 'Assignment')
 
-    item = get_assignments('this', get_user_id(request))
-    if item:
-        item['family_members'].append(family_member)
-        item['assignments'].append(assignment)
-    else:
-        item = {'id': get_user_id(request), 'family_members': [family_member], 'assignments': [assignment]}
-    table.put_item(Item=item)
-    return respond(f"{family_member} added to {assignment}.")
+    confirmationStatus = request['request']['intent']['confirmationStatus']
+    if confirmationStatus == 'CONFIRMED':
+        item = get_assignments('this', get_user_id(request))
+        if item:
+            item['family_members'].append(family_member)
+            item['assignments'].append(assignment)
+        else:
+            item = {'id': get_user_id(request), 'family_members': [family_member], 'assignments': [assignment]}
+        table.put_item(Item=item)
+        return respond(f"{family_member} added to {assignment}.")
+    elif confirmationStatus == 'DENIED':
+        return respond(f"OK, not proceeding.")
 
 def test(verbose=False):
     import doctest
+    global testing
+    testing=True
     return doctest.testmod(verbose=verbose)[0]
 
 if __name__ == "__main__":

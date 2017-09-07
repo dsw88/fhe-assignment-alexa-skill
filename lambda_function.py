@@ -126,6 +126,7 @@ def handler(event, context):
     ...
     botocore.exceptions.ClientError: An error occurred (ValidationException) when calling the PutItem operation: One or more parameter values were invalid: An AttributeValue may not contain an empty string
     """
+    log(f"Incoming request: {event}")
     if "rotate" in event:
         rotate_all_assignments(event)
     if event['session']['application']['applicationId'] != app_id:
@@ -347,7 +348,6 @@ def help_intent_handler(request):
     return respond("Hi there! I can tell you and your family which family members have which assignments for family home evening each week. And, I'll automatically rotate those assignments each week so you don't have to do that. To start, just say, 'Alexa, open family home evening assignments.'")
 
 def setup_intent_handler(request):
-    log(request)
     while request['request']['dialogState'] != 'COMPLETED':
         return dialog('Delegate')
 

@@ -348,8 +348,9 @@ def help_intent_handler(request):
     return respond("Hi there! I can tell you and your family which family members have which assignments for family home evening each week. And, I'll automatically rotate those assignments each week so you don't have to do that. To start, just say, 'Alexa, open family home evening assignments.'")
 
 def setup_intent_handler(request):
-    while request['request']['dialogState'] != 'COMPLETED':
-        return dialog('Delegate')
+    if 'dialogState' in request['request']:
+        if request['request']['dialogState'] != 'COMPLETED':
+            return dialog('Delegate')
 
     family_member = get_slot(request, 'FamilyMember')
     assignment = get_slot(request, 'Assignment')

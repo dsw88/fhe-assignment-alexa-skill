@@ -338,7 +338,7 @@ def launch_request_handler(request, week='this'):
         response = "The assignments {}: ".format(conjunction_junction(week, individual=False))
         for i, family_member in enumerate(assignments['family_members']):
             family_member = normalize_family_member(family_member)
-            response += '{} {}, '.format(family_member, assignments['assignment'])
+            response += '{} {}, '.format(family_member, assignments['assignments'][i])
         return respond(response)
     except:
         print(f"these are the assignments from the db: {assignments}")

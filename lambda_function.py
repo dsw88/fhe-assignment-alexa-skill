@@ -341,6 +341,7 @@ def launch_request_handler(request, week='this'):
             response += '{} {}, '.format(family_member, assignments['assignment'])
         return respond(response)
     except:
+        print(f"these are the assignments from the db: {assignments}")
         print(traceback.format_exc())
         return respond("There was a problem retrieving the assignments.")
 

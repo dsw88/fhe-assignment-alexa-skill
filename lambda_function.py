@@ -125,6 +125,8 @@ def handler(event, context):
     Traceback (most recent call last):
     ...
     botocore.exceptions.ClientError: An error occurred (ValidationException) when calling the PutItem operation: One or more parameter values were invalid: An AttributeValue may not contain an empty string
+    >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'ClearIntent'}}}, {})
+    {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': 'The assignments and family members are now empty.  To add new ones just run setup again.'}, 'shouldEndSession': True}}
     """
     log(f"Incoming request: {event}")
     if "rotate" in event:
@@ -144,6 +146,8 @@ def handler(event, context):
             return respond('Cancelling')
         if event['request']['intent']['name'] == 'SetupIntent':
             return setup_intent_handler(event)
+        if event['request']['intent']['name'] == 'ClearIntent':
+            return clear_intent_handler(event)
 
 def dialog(dialogType, promptText="", updatedIntent={}):
     """
@@ -364,9 +368,13 @@ def setup_intent_handler(request):
         else:
             item = {'id': get_user_id(request), 'family_members': [family_member], 'assignments': [assignment]}
         table.put_item(Item=item)
-        return respond(f"{family_member} added to {assignment}.")
+        return respond(f"{family_member} added to {assignment}. To add another family member or assign just run setup again. To clear the assignments just say clear.", shouldEndSession=False)
     elif confirmationStatus == 'DENIED':
         return respond(f"OK, not proceeding.")
+
+def clear_intent_handler(request):
+    table.delete_item(Key={'id': get_user_id(request)})
+    return respond("The assignments and family members are now empty.  To add new ones just run setup again.")
 
 def test(verbose=False):
     import doctest

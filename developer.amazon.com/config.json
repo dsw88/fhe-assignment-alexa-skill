@@ -47,7 +47,9 @@
         "empty the config",
         "empty the setup",
         "start over",
-        "clean slate"
+        "clean slate",
+        "clear setup",
+        "clear config"
       ],
       "slots": []
     },

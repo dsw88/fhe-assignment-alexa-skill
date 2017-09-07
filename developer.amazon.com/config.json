@@ -13,7 +13,8 @@
       "samples": [
         "all done",
         "let's end this",
-        "time to end"
+        "time to end",
+        "I'm finished"
       ]
     },
     {
@@ -360,21 +361,6 @@
       ]
     },
     {
-      "id": "Confirm.Intent-SetupIntent",
-      "promptVersion": "1.0",
-      "definitionVersion": "1.0",
-      "variations": [
-        {
-          "type": "PlainText",
-          "value": "Ready to setup {familyMember} on {assignment}?"
-        },
-        {
-          "type": "PlainText",
-          "value": "I'll setup {familyMember} with {assignment} this week.  OK?"
-        }
-      ]
-    },
-    {
       "id": "Elicit.Intent-SetupIntent.IntentSlot-familyMember",
       "promptVersion": "1.0",
       "definitionVersion": "1.0",
@@ -496,10 +482,8 @@
       },
       {
         "name": "SetupIntent",
-        "confirmationRequired": true,
-        "prompts": {
-          "confirm": "Confirm.Intent-SetupIntent"
-        },
+        "confirmationRequired": false,
+        "prompts": {},
         "slots": [
           {
             "name": "familyMember",

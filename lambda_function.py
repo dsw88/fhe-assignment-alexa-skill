@@ -336,7 +336,7 @@ def get_user_id(request):
 def launch_request_handler(request, week='this'):
     userId = get_user_id(request)
     if not is_setup(userId):
-        return respond("You haven't setup your family members and assignments yet.  If you ready to do that now, just say, 'setup'.", shouldEndSession=False)
+        return respond("You haven't setup your family members and assignments yet.  If you're ready to do that now, just say, 'setup' or say stop to finish.", shouldEndSession=False)
     try:
         assignments = get_assignments(week, userId)
         response = "The assignments {}: ".format(conjunction_junction(week, individual=False))
@@ -368,7 +368,7 @@ def setup_intent_handler(request):
         else:
             item = {'id': get_user_id(request), 'family_members': [family_member], 'assignments': [assignment]}
         table.put_item(Item=item)
-        return respond(f"{family_member} added to {assignment}. To add another family member or assign just run setup again. To clear the assignments just say clear.", shouldEndSession=False)
+        return respond(f"{family_member} added to {assignment}. To add another family member or assignment just run setup again. To clear the assignments just say clear. And to finish say all done.", shouldEndSession=False)
     elif confirmationStatus == 'DENIED':
         return respond(f"OK, not proceeding.")
 

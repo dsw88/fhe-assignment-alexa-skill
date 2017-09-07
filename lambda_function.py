@@ -359,18 +359,14 @@ def setup_intent_handler(request):
     family_member = get_slot(request, 'FamilyMember')
     assignment = get_slot(request, 'Assignment')
 
-    confirmationStatus = request['request']['intent']['confirmationStatus']
-    if confirmationStatus == 'CONFIRMED':
-        item = get_assignments('this', get_user_id(request))
-        if item:
-            item['family_members'].append(family_member)
-            item['assignments'].append(assignment)
-        else:
-            item = {'id': get_user_id(request), 'family_members': [family_member], 'assignments': [assignment]}
-        table.put_item(Item=item)
-        return respond(f"{family_member} added to {assignment}. To add another family member or assignment just run setup again. To clear the assignments just say clear. And to finish say all done.", shouldEndSession=False)
-    elif confirmationStatus == 'DENIED':
-        return respond(f"OK, not proceeding.")
+    item = get_assignments('this', get_user_id(request))
+    if item:
+        item['family_members'].append(family_member)
+        item['assignments'].append(assignment)
+    else:
+        item = {'id': get_user_id(request), 'family_members': [family_member], 'assignments': [assignment]}
+    table.put_item(Item=item)
+    return respond(f"{family_member} added to {assignment}. To add another family member or assignment just run setup again. To clear the assignments just say clear. And to finish say all done.", shouldEndSession=False)
 
 def clear_intent_handler(request):
     table.delete_item(Key={'id': get_user_id(request)})

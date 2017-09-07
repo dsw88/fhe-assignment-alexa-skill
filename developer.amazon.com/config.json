@@ -15,7 +15,8 @@
         "let's end this",
         "time to end",
         "I'm finished",
-        "I'm done"
+        "I'm done",
+        "finish"
       ]
     },
     {
@@ -74,7 +75,12 @@
         "add a new assignment",
         "add a new family member",
         "add a new person",
-        "add a person"
+        "add a person",
+        "another",
+        "add another",
+        "add another person",
+        "add another family member",
+        "add another assignment"
       ],
       "slots": [
         {
@@ -332,6 +338,10 @@
         {
           "type": "PlainText",
           "value": "Clear the assignments?"
+        },
+        {
+          "type": "PlainText",
+          "value": "clear"
         }
       ]
     },

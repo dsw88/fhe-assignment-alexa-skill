@@ -114,9 +114,9 @@ def handler(event, context):
     >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'AMAZON.HelpIntent'}}}, {})
     {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': "Hi there! I can tell you and your family which family members have which assignments for family home evening each week. And, I'll automatically rotate those assignments each week so you don't have to do that. To start, just say, 'Alexa, open family home evening assignments.'"}, 'shouldEndSession': True}}
     >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'AMAZON.CancelIntent'}}}, {})
-    {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': 'Cancelling'}, 'shouldEndSession': True}}
+    {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': 'Ending'}, 'shouldEndSession': True}}
     >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'AMAZON.StopIntent'}}}, {})
-    {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': 'Cancelling'}, 'shouldEndSession': True}}
+    {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': 'Ending'}, 'shouldEndSession': True}}
     >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'SetupIntent', 'confirmationStatus': 'NONE'}, 'dialogState': 'STARTED'}}, {})
     {'version': '1.0', 'sessionAttributes': {}, 'response': {'shouldEndSession': False, 'directives': [{'type': 'Dialog.Delegate'}]}}
     >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'SetupIntent'}, 'dialogState': 'COMPLETED'}}, {})
@@ -128,7 +128,7 @@ def handler(event, context):
     """
     log(f"Incoming request: {event}")
     if "rotate" in event:
-        rotate_all_assignments(event)
+        return rotate_all_assignments(event)
     if event['session']['application']['applicationId'] != app_id:
         raise Exception('Invalid app id')
     request_type = event['request']['type']
@@ -141,7 +141,7 @@ def handler(event, context):
         if event['request']['intent']['name'] == 'AMAZON.HelpIntent':
             return help_intent_handler(event)
         if event['request']['intent']['name'] in ['AMAZON.CancelIntent', 'AMAZON.StopIntent']:
-            return respond('Cancelling')
+            return respond('Ending')
         if event['request']['intent']['name'] == 'SetupIntent':
             return setup_intent_handler(event)
         if event['request']['intent']['name'] == 'ClearIntent':

@@ -14,7 +14,8 @@
         "all done",
         "let's end this",
         "time to end",
-        "I'm finished"
+        "I'm finished",
+        "I'm done"
       ]
     },
     {
@@ -300,32 +301,6 @@
           "id": null,
           "name": {
             "value": "prayer",
-            "synonyms": []
-          }
-        }
-      ]
-    },
-    {
-      "name": "WEEKS",
-      "values": [
-        {
-          "id": null,
-          "name": {
-            "value": "last",
-            "synonyms": []
-          }
-        },
-        {
-          "id": null,
-          "name": {
-            "value": "this",
-            "synonyms": []
-          }
-        },
-        {
-          "id": null,
-          "name": {
-            "value": "next",
             "synonyms": []
           }
         }

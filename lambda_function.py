@@ -108,9 +108,9 @@ def handler(event, context):
     ...
     Exception: Invalid app id
     >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'LaunchRequest'}}, {})
-    {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': "You haven't setup your family members and assignments yet.  If you ready to do that now, just say, 'setup'."}, 'shouldEndSession': False}}
+    {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': "You haven't setup your family members and assignments yet.  If you're ready to do that now, just say, 'setup' or say stop to finish."}, 'shouldEndSession': False}}
     >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'AssignmentsIntent'}}}, {})
-    {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': "You haven't setup your family members and assignments yet.  If you ready to do that now, just say, 'setup'."}, 'shouldEndSession': False}}
+    {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': "You haven't setup your family members and assignments yet.  If you're ready to do that now, just say, 'setup' or say stop to finish."}, 'shouldEndSession': False}}
     >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'AMAZON.HelpIntent'}}}, {})
     {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': "Hi there! I can tell you and your family which family members have which assignments for family home evening each week. And, I'll automatically rotate those assignments each week so you don't have to do that. To start, just say, 'Alexa, open family home evening assignments.'"}, 'shouldEndSession': True}}
     >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'AMAZON.CancelIntent'}}}, {})
@@ -119,9 +119,7 @@ def handler(event, context):
     {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': 'Cancelling'}, 'shouldEndSession': True}}
     >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'SetupIntent', 'confirmationStatus': 'NONE'}, 'dialogState': 'STARTED'}}, {})
     {'version': '1.0', 'sessionAttributes': {}, 'response': {'shouldEndSession': False, 'directives': [{'type': 'Dialog.Delegate'}]}}
-    >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'SetupIntent', 'confirmationStatus': 'DENIED'}, 'dialogState': 'COMPLETED'}}, {})
-    {'version': '1.0', 'sessionAttributes': {}, 'response': {'outputSpeech': {'type': 'PlainText', 'text': 'OK, not proceeding.'}, 'shouldEndSession': True}}
-    >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'SetupIntent', 'confirmationStatus': 'CONFIRMED'}, 'dialogState': 'COMPLETED'}}, {})
+    >>> handler({'session': {'user': {'userId': 'user123'}, 'application': {'applicationId': app_id}}, 'request': {'type': 'IntentRequest', 'intent': {'name': 'SetupIntent'}, 'dialogState': 'COMPLETED'}}, {})
     Traceback (most recent call last):
     ...
     botocore.exceptions.ClientError: An error occurred (ValidationException) when calling the PutItem operation: One or more parameter values were invalid: An AttributeValue may not contain an empty string

@@ -348,7 +348,7 @@ def launch_request_handler(request, week='this'):
         return respond("There was a problem retrieving the assignments.")
 
 def help_intent_handler(request):
-    return respond("Hi there! I can tell you and your family which family members have which assignments for family home evening each week. And, I'll automatically rotate those assignments each week so you don't have to do that. To start, just say, 'Alexa, open family home evening assignments.'")
+    return respond("This skill has three things you can ask it to do; setup new family members and assignments, clear those assignments and tell you the current assignments for this week for all family members.  To setup new family members and assignment just say setup.  To clear the assignments just say clear.  To hear this week's assignments say assignments.", shouldEndSession=False)
 
 def setup_intent_handler(request):
     if not 'dialogState' in request['request'] or request['request']['dialogState'] != 'COMPLETED':

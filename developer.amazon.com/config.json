@@ -28,7 +28,9 @@
         "to give us the assignments",
         "the week's assignments",
         "to give me this week's assignments",
-        "to give us this week's assignments"
+        "to give us this week's assignments",
+        "assignments",
+        "family member"
       ],
       "slots": []
     },

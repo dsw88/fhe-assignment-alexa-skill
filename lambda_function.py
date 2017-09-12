@@ -8,7 +8,7 @@ import traceback
 # Initialization
 dynamodb = boto3.resource('dynamodb')
 sns = boto3.client('sns')
-table = dynamodb.Table(os.environ['DYNAMODB_FHE_ALEXA_PRD_DB_TABLE_NAME'])
+table = dynamodb.Table(os.environ['DB_TABLE_NAME'])
 
 app_id = 'amzn1.ask.skill.31864ddd-cc63-4274-bd5c-8f851cca8fc1'
 testing=False
